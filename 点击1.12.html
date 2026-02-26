@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>洪荒仙录 - 传说升格版</title>
+    <style>
+        body { font-family: 'Microsoft YaHei', sans-serif; background-color: #1a1a24; color: #fff; text-align: center; margin: 0; padding: 10px 20px 30px; user-select: none; }
+        
+        #start-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 9999; }
+        #start-overlay .modal { background: #252536; padding: 40px; border-radius: 12px; max-width: 400px; width: 80%; box-shadow: 0 0 30px rgba(100,200,255,0.3); }
+        .ui-input { box-sizing:border-box; width: 100%; padding: 10px; border-radius: 6px; border: none; font-size: 16px; margin-bottom: 20px; text-align: center; font-weight: bold; background: #151522; color: #fff; }
+        
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin: 0 auto 15px; max-width: 650px; }
+        .header-name { font-size: 20px; font-weight: bold; color: #00cec9; text-shadow: 0 0 8px rgba(0,206,201,0.5); }
+        .save-load-btn { background: #2d3436; color: #fff; border: 1px solid #636e72; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: 0.2s; margin-left: 5px; }
+        .save-load-btn:hover { background: #636e72; }
+        
+        .container { max-width: 650px; margin: 0 auto; background: #252536; padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
+        
+        .quest-panel { background: #151522; border-radius: 8px; padding: 10px; margin-bottom: 15px; max-height: 150px; overflow-y: auto; text-align: left; border: 1px solid #2d3436; }
+        .quest-title { font-size: 14px; font-weight: bold; color: #f1c40f; margin-bottom: 8px; border-bottom: 1px solid #333; padding-bottom: 5px;}
+        .quest-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed #2a2a40; font-size: 13px; }
+        .btn-claim { background-color: #555; color: #aaa; border: none; padding: 4px 10px; border-radius: 4px; font-weight: bold; cursor: not-allowed; transition: 0.2s; min-width:80px; text-align:center;}
+        .btn-claim.active { background-color: #f1c40f; color: #b33939; cursor: pointer; box-shadow: 0 2px 0 #d4a000; }
+        .btn-claim.active:active { transform: translateY(2px); box-shadow: none; }
+        .btn-claim.done { background-color: #218c53; color: #fff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); }
+
+        .treasure-box { background: #192a56; border: 1px solid #273c75; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
+        .treasure-header { font-size: 15px; color: #00a8ff; font-weight: bold; margin-bottom: 10px; border-bottom: 1px dashed #273c75; padding-bottom: 8px; }
+        .treasure-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .treasure-item { background: #2f3640; border-radius: 6px; padding: 8px; font-size: 11px; cursor: pointer; box-shadow: 0 3px 0 #1e272e; transition:0.1s; display:flex; flex-direction:column; justify-content:center; border: 1px solid transparent; }
+        .treasure-item:active:not(.locked):not(.cant-up) { transform: translateY(3px); box-shadow: none; }
+        .treasure-item:hover:not(.locked):not(.cant-up) { filter: brightness(1.2); }
+        .treasure-item.locked { background:#252a30; cursor:not-allowed; box-shadow: 0 3px 0 #1b1e22; opacity:0.5; filter: grayscale(40%); }
+        .treasure-item.owned { opacity: 1; filter: none; border-color: #00cec9; background: #223e4a; box-shadow: 0 3px 0 #12212a, 0 0 10px rgba(0,206,201,0.25); }
+        .treasure-item.owned.cant-up { opacity: 0.85; border-color: #1e272e; background: #2f3640; box-shadow: 0 3px 0 #1b1e22; cursor: not-allowed; }
+        @media (max-width: 550px) { .treasure-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .gold-display { font-size: 26px; color: #ffd700; font-weight: bold; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+
+        .stats-board { display: flex; flex-direction: column; gap: 8px; background: #151522; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 12px; }
+        .stats-row { display: grid; gap: 8px; }
+        .stats-row.row-4 { grid-template-columns: repeat(4, 1fr); }
+        .stats-row.row-2 { grid-template-columns: repeat(2, 1fr); }
+        .stats-item { background: #1e1e2d; padding: 6px; border-radius: 6px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); font-weight:bold; }
+        @media (max-width: 550px) { .stats-row.row-4 { grid-template-columns: repeat(2, 1fr); } }
+
+        .stage-info { font-size: 18px; font-weight: bold; color: #2ed573; margin-bottom: 8px; }
+        
+        .boss-timer { font-size: 15px; color: #ff4757; font-weight: bold; display: none; margin-left: 8px; animation: pulseText 1.5s infinite alternate; }
+        @keyframes pulseText { from { opacity: 1; } to { opacity: 0.6; } }
+        
+        .monster-area { position: relative; height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; background: #1c1c2a; border-radius: 10px; padding: 20px; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5); }
+        
+        .monster { box-sizing: border-box; width: 100px; height: 100px; background-color: #576574; border-radius: 20%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 6px 0 #18222b; transition: transform 0.05s, box-shadow 0.05s, filter 0.1s; border: none; outline: none; }
+        .monster:active { transform: translateY(6px) !important; box-shadow: 0 0 0 #18222b !important; }
+        .monster.hit { animation: hitReaction 0.1s ease-out; }
+        @keyframes hitReaction { 0% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(0.9); filter: brightness(2) drop-shadow(0 0 15px red); background-color: #ff4757; } 100% { transform: scale(1); filter: brightness(1); } }
+        
+        .monster.boss { outline: 5px solid #ff0000; outline-offset: -5px; border-radius: 25%; animation: rainbowOutline 2s linear infinite, bossFloat 3s infinite ease-in-out; box-shadow: 0 8px 0 #4cd137; }
+        .monster.boss:active { transform: translateY(8px) !important; box-shadow: 0 0 0 #4cd137 !important; animation: rainbowOutline 2s linear infinite !important; }
+        @keyframes bossFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes rainbowOutline { 0% { outline-color: #ff0000; } 14% { outline-color: #ff7f00; } 28% { outline-color: #ffff00; } 42% { outline-color: #00ff00; } 57% { outline-color: #0000ff; } 71% { outline-color: #4b0082; } 85% { outline-color: #8b00ff; } 100% { outline-color: #ff0000; } }
+
+        .hp-bar-container { width: 85%; height: 20px; background: #333; border-radius: 10px; margin-top: 25px; overflow: hidden; position: relative; border: 2px solid #222; }
+        .hp-bar { height: 100%; background: linear-gradient(90deg, #ff4757, #ff6b81); width: 100%; transition: width 0.1s linear; }
+        .hp-text { position: absolute; top: 0; left: 0; width: 100%; text-align: center; font-size: 12px; line-height: 20px; font-weight: bold; color: #fff; text-shadow: 1px 1px 2px #000; }
+        
+        .challenge-btn { background-color: #ff4757; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-bottom: 15px; display: none; box-shadow: 0 4px 0 #cc0000; }
+        .challenge-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #cc0000; }
+        
+        .upgrades { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        @media (max-width: 500px) { .upgrades { grid-template-columns: 1fr; } }
+        
+        .upg-item { background-color: #3742fa; color: white; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 0 rgba(0,0,0,0.3); text-align: left; transition: opacity 0.2s; }
+        .upg-item.disabled-in-auto { opacity: 0.5; pointer-events: none; filter: grayscale(50%); }
+
+        .upg-item .title-row { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 13px;}
+        .upg-item .desc-row { font-size: 11px; opacity: 0.9; margin-bottom:2px;}
+        .upg-actions { display: flex; gap: 6px; }
+        .upg-act-btn { flex: 1; border: none; padding: 6px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; background: rgba(255,255,255,0.25); color: white; transition: 0.1s; border:1px solid transparent;}
+        .upg-act-btn:hover:not(:disabled) { background: rgba(255,255,255,0.35); }
+        .upg-act-btn:active:not(:disabled) { transform: translateY(2px); }
+        .upg-act-btn:disabled { background: rgba(0,0,0,0.3); color: #999; cursor: not-allowed; }
+
+        .upg-act-btn.btn-10x { background-color: #d35400 !important; color: #fff !important; text-shadow: 1px 1px 1px #000; }
+        .upg-act-btn.btn-10x:hover:not(:disabled) { background-color: #e67e22 !important; }
+        .upg-item .upg-act-btn.btn-10x:disabled { background-color: rgba(0,0,0,0.4) !important; color: #888 !important; text-shadow: none; }
+        
+        .item-core { background-color: #0984e3; }
+        .item-deadly { background-color: #6c5ce7; }
+        .item-auto { background-color: #bdc3c7; color:#000; }
+        .item-auto .upg-act-btn { background: rgba(0,0,0,0.1); color: #000; } .item-auto .upg-act-btn:disabled { color: #666; background: rgba(0,0,0,0.06);}
+        .item-nezha { background-color: #d63031; }
+        .item-yangjian { background-color: #00cec9; color:#000; }
+        .item-yangjian .upg-act-btn { background: rgba(0,0,0,0.1); color: #000; } .item-yangjian .upg-act-btn:disabled { color: #666; background: rgba(0,0,0,0.06);}
+        .item-wukong { background-color: #e17055; }
+        .item-guanyin { background-color: #fd79a8; color:#000; }
+        .item-guanyin .upg-act-btn { background: rgba(0,0,0,0.1); color: #000; } .item-guanyin .upg-act-btn:disabled { color: #666; background: rgba(0,0,0,0.06);}
+        .item-rulai { background-color: #fdcb6e; color:#000; }
+        .item-rulai .upg-act-btn { background: rgba(0,0,0,0.1); color: #000; } .item-rulai .upg-act-btn:disabled { color: #666; background: rgba(0,0,0,0.06);}
+
+        .lvl-badge { color: #f1c40f; font-weight: 900; }
+
+        .rebirth-area { background: #341f3e; border: 2px dashed #e056fd; padding: 20px; border-radius: 10px; margin-top: 20px; display: block; }
+        .rebirth-btn { background: linear-gradient(135deg, #8e44ad, #c0392b); color: #fff; font-size: 22px; font-weight: bolder; padding: 15px 30px; border: none; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 0 #5b286f; transition: transform 0.1s; width: 100%;}
+        .rebirth-btn:active:not(:disabled) { transform: translateY(6px); box-shadow: none; }
+        .rebirth-btn:disabled { background: #4a4a4a !important; color: #7f8c8d !important; cursor: not-allowed; box-shadow: 0 6px 0 #2c3e50 !important; }
+
+        /* 自动化阵列 UI */
+        .auto-mode-area { background: #12121a; border: 2px solid #2980b9; padding: 20px; border-radius: 10px; margin-top: 20px; position:relative; overflow:hidden;}
+        .auto-mode-area::before { content: "AUTO"; position: absolute; right:-20px; bottom:-30px; font-size:80px; font-weight:900; color:rgba(41,128,185,0.1); pointer-events:none;}
+        .auto-title { color: #3498db; font-size: 18px; font-weight: bold; margin-bottom: 8px; }
+        .auto-desc { font-size: 12px; color: #aaa; margin-bottom: 15px; }
+        .auto-controls { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap:wrap;}
+        .auto-input { background: #000; border: 1px solid #2980b9; color: #f1c40f; font-weight: bold; text-align: center; width: 80px; padding: 8px; border-radius: 6px; font-size:16px;}
+        .auto-btn { background: #2980b9; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size:15px; box-shadow: 0 4px 0 #1b4f72;}
+        .auto-btn:active:not(:disabled) { transform:translateY(4px); box-shadow:none;}
+        .auto-btn.active { background: #e74c3c; box-shadow: 0 4px 0 #922b21; border:1px solid #c0392b;}
+
+        .floating-damage { position: absolute; color: #fff; font-weight: bold; font-size: 20px; pointer-events: none; animation: floatUp 0.8s forwards; text-shadow: 1px 1px 3px #000; z-index: 10; }
+        .crit-damage { color: #ffcc00; font-size: 28px; text-shadow: 0 0 5px #ff0000, 1px 1px 3px #000; z-index: 11; }
+        .deadly-damage { color: #9b59b6; font-size: 35px; text-shadow: 0 0 10px #8e44ad, 1px 1px 5px #000; font-style: italic; z-index: 12;}
+        .auto-dmg-mark { font-size: 14px; opacity:0.8; margin-right:4px; vertical-align:middle; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1.1); } 100% { opacity: 0; transform: translateY(-70px) scale(1.3); } }
+    </style>
+</head>
+<body>
+
+<div id="start-overlay">
+    <div class="modal">
+        <h2 style="color:#00cec9; margin-top:0;">📖 洪荒仙录 - 传说之巅</h2>
+        <p style="font-size:14px; color:#aaa; margin-bottom:20px;">大千世界，气归一门。请载入天道记忆或新建凡躯。</p>
+        <input type="text" id="player-name-input" class="ui-input" placeholder="输入您的仙界尊讳" />
+        <br>
+        <button class="upg-item item-core" style="width:100%; text-align:center; cursor:pointer;" onclick="startGame()">⚔️ 凝结凡躯 (开始游戏)</button>
+        <div style="font-size:12px; color:#777; margin-bottom:12px; margin-top:10px;">——— 或 ———</div>
+        <button class="upg-item item-auto" style="width:100%; text-align:center; cursor:pointer;" onclick="loadAutoSave()">⏱️ 逆转时光 (读取自动存档)</button>
+        <div style="font-size:12px; color:#777; margin-bottom:12px; margin-top:10px;">——— 或 ———</div>
+        <button class="upg-item item-auto" style="width:100%; text-align:center; cursor:pointer;" onclick="document.getElementById('file-import-init').click()">📂 唤醒天道 (导入本地星阵)</button>
+        <input type="file" id="file-import-init" accept=".json" onchange="importSaveData(event)" style="display:none;" />
+    </div>
+</div>
+
+<div class="header-section">
+    <div class="header-name" id="display-name">【未命名】的试炼</div>
+    <div style="display:flex; align-items:center;">
+        <span id="auto-save-time" style="font-size:11px; color:#aaa; margin-right:5px; font-weight:bold;">未存档</span>
+        <button class="save-load-btn" onclick="exportSaveData()">💾 导出</button>
+        <button class="save-load-btn" onclick="document.getElementById('file-import-ingame').click()">📂 导入</button>
+        <input type="file" id="file-import-ingame" accept=".json" onchange="importSaveData(event)" style="display:none;" />
+    </div>
+</div>
+
+<div class="container">
+    <div class="quest-panel">
+        <div class="quest-title">📜 仙界悬赏列表</div>
+        <div id="quest-list"></div>
+    </div>
+
+    <div class="treasure-box">
+        <div class="treasure-header">
+            💎 降妖法宝阁 <span style="font-size:12px;color:#aaa;font-weight:normal;">(无阶法器永燃传承)</span>
+            <div style="font-size:13px; color:#e056fd; margin-top:6px; font-weight:normal; background:rgba(0,0,0,0.25); padding:6px; border-radius:6px; text-shadow:0 0 5px rgba(224,86,253,0.3);">
+                降妖道蕴: <strong id="stat-dsp" style="font-size:16px;">0</strong> 点&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;转身破劫: <strong id="stat-rebirths" style="font-size:14px;">0</strong> 次
+            </div>
+        </div>
+        <div class="treasure-grid" id="treasure-grid"></div>
+    </div>
+
+    <div class="gold-display">金币: <span id="gold">0</span> 💰</div>
+
+    <div class="stats-board">
+        <div class="stats-row row-4">
+            <div class="stats-item">基础攻击: <span id="stat-dmg" style="color:#ff6b81">1</span></div>
+            <div class="stats-item">自动频率: <span id="stat-auto" style="color:#2ed573">0</span>/分</div>
+            <div class="stats-item">暴击几率: <span id="stat-crit-rate" style="color:#ffcc00">0.0</span>%</div>
+            <div class="stats-item">暴击伤害: <span id="stat-crit-dmg" style="color:#ffcc00">150</span>%</div>
+        </div>
+        <div class="stats-row row-2">
+            <div class="stats-item">致命几率: <span id="stat-deadly-rate" style="color:#9b59b6">1.00</span>%</div>
+            <div class="stats-item">致命倍率: <span id="stat-deadly-dmg" style="color:#9b59b6">10</span> 倍</div>
+        </div>
+    </div>
+
+    <div class="stage-info">
+        <span id="stage-info-text">第 1 轮 - 序号 1 小怪</span>
+        <span class="boss-timer" id="boss-timer-wrap">(挑战倒计时: <span id="timer-text">90</span>秒)</span>
+    </div>
+    
+    <button class="challenge-btn" id="btn-challenge" onclick="challengeBoss()">⚔️ 重新挑战关底魔尊</button>
+
+    <div class="monster-area" id="monster-area">
+        <div class="monster" id="monster" onclick="attackHnd(event)">👾</div>
+        <div class="hp-bar-container">
+            <div class="hp-bar" id="hp-bar"></div>
+            <div class="hp-text"><span id="hp-current">10</span> / <span id="hp-max">10</span></div>
+        </div>
+    </div>
+
+    <div class="upgrades" id="upgrades-dom">
+        <!-- Upgrade items rendered inside this loop matching JS IDs -->
+        <div class="upg-item item-core" id="upg-ui-dmg">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-dmg">[Lv.0]</span> 🗡️ 提升基础段位</span></div>
+            <div class="desc-row" id="desc-dmg">下阶跃升 +1</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-dmg-1" onclick="buyStateUpg('dmg',1)">1级(🪙<span id="cost-dmg-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-dmg-10" onclick="buyStateUpg('dmg',10)">10级(🪙<span id="cost-dmg-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-core" id="upg-ui-cR">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-cR">[Lv.0]</span> 🎯 提升暴率</span></div>
+            <div class="desc-row" id="desc-cR">每次研习 +0.1% 几率</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-cR-1" onclick="buyStateUpg('cR',1)">1级(🪙<span id="cost-cR-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-cR-10" onclick="buyStateUpg('cR',10)">10级(🪙<span id="cost-cR-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-core" id="upg-ui-cD">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-cD">[Lv.0]</span> 💥 提高暴伤</span></div>
+            <div class="desc-row" id="desc-cD">每次精通 +1% 暴击伤害</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-cD-1" onclick="buyStateUpg('cD',1)">1级(🪙<span id="cost-cD-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-cD-10" onclick="buyStateUpg('cD',10)">10级(🪙<span id="cost-cD-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-deadly" id="upg-ui-dd">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-dd">[Lv.0]</span> ☠️ 致命倍率</span></div>
+            <div class="desc-row" id="desc-dd">领悟法则 +1倍 致命残伤</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-dd-1" onclick="buyStateUpg('dd',1)">1级(🪙<span id="cost-dd-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-dd-10" onclick="buyStateUpg('dd',10)">10级(🪙<span id="cost-dd-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-auto" id="upg-ui-a0">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-a0">[未召唤]</span> 🤖 基础挂机</span></div>
+            <div class="desc-row" id="desc-a0">基准跃出 +2 次/分</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-a0-1" onclick="buyStateUpg('a0',1)">1级(🪙<span id="cost-a0-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-a0-10" onclick="buyStateUpg('a0',10)">10级(🪙<span id="cost-a0-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-nezha" id="upg-ui-a1">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-a1">[未召唤]</span> 🔥 唤 哪吒</span></div>
+            <div class="desc-row" id="desc-a1">三昧真火 +10 次/分</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-a1-1" onclick="buyStateUpg('a1',1)">1级(🪙<span id="cost-a1-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-a1-10" onclick="buyStateUpg('a1',10)">10级(🪙<span id="cost-a1-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-yangjian" id="upg-ui-a2">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-a2">[未召唤]</span> 👁️ 唤 杨戬</span></div>
+            <div class="desc-row" id="desc-a2">天眼神威 +20 次/分</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-a2-1" onclick="buyStateUpg('a2',1)">1级(🪙<span id="cost-a2-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-a2-10" onclick="buyStateUpg('a2',10)">10级(🪙<span id="cost-a2-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-wukong" id="upg-ui-a3">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-a3">[未召唤]</span> 🐒 唤 孙悟空</span></div>
+            <div class="desc-row" id="desc-a3">通天一棍 +30 次/分</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-a3-1" onclick="buyStateUpg('a3',1)">1级(🪙<span id="cost-a3-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-a3-10" onclick="buyStateUpg('a3',10)">10级(🪙<span id="cost-a3-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-guanyin" id="upg-ui-a4">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-a4">[未召唤]</span> 🪷 唤 观音菩萨</span></div>
+            <div class="desc-row" id="desc-a4">大慈悲咒 +50 次/分</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-a4-1" onclick="buyStateUpg('a4',1)">1级(🪙<span id="cost-a4-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-a4-10" onclick="buyStateUpg('a4',10)">10级(🪙<span id="cost-a4-10"></span>)</button>
+            </div>
+        </div>
+        <div class="upg-item item-rulai" id="upg-ui-a5">
+            <div class="title-row"><span><span class="lvl-badge" id="lvl-a5">[未召唤]</span> ☸️ 唤 如来佛祖</span></div>
+            <div class="desc-row" id="desc-a5">万佛无界 +100 次/分</div>
+            <div class="upg-actions">
+                <button class="upg-act-btn" id="btn-a5-1" onclick="buyStateUpg('a5',1)">1级(🪙<span id="cost-a5-1"></span>)</button>
+                <button class="upg-act-btn btn-10x" id="btn-a5-10" onclick="buyStateUpg('a5',10)">10级(🪙<span id="cost-a5-10"></span>)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 普通过渡重生 -->
+    <div class="rebirth-area" id="rebirth-wrap">
+        <h3 style="color:#e056fd; margin-top:0;">生死轮转 · 破虚重生</h3>
+        <p style="font-size:13px; color:#aaa;">(清除修仙境界与所有金币碎屑，获取降妖点数，保留法宝与任务)<br><span style="color:#2ed573;">重铸凡躯后基础拥有 100万 金币底蕴 (享玉净瓶成倍放大)</span></p>
+        <p style="color:#fbc531; font-weight:bold; font-size:18px;">本次破虚现余汇聚: <span id="current-rebirth-points" style="font-size:26px; color:#fff;">0</span> 点</p>
+        <div id="rebirth-lock-text" style="color:#e74c3c; font-size:13px; margin-bottom:8px;">需要击败第10轮核心决战关以斩碎轮回界壁 (当前最远打通轮数: <span id="r-lock-stage">1</span> 轮)</div>
+        <button class="rebirth-btn" id="btn-rebirth" onclick="doRebirth(false)" disabled>🔄 逆 天 改 命</button>
+    </div>
+
+    <!-- 挂机自动化中枢 -->
+    <div class="auto-mode-area">
+        <div class="auto-title">⚡ 雷霆道枢 (全自动修仙模式)</div>
+        <div class="auto-desc">每次获金即刻按序疯狂榨干金币升阶武学。<br/>锁定命数后，斩落该目标劫数魔尊时神魂引爆全自动破劫循环！</div>
+        <div class="auto-controls">
+            <span style="font-weight:bold;">锁定重生轮次:</span>
+            <input type="number" id="auto-stage-input" class="auto-input" min="10" value="10" />
+            <button class="auto-btn" id="btn-toggle-auto" onclick="toggleAutoRebirth()">开启全自动挂机</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function f(num) {
+        if (!num || num === 0) return "0";
+        if (num >= 1e9) return parseFloat((num / 1e8).toFixed(2)) + "亿";
+        else if (num >= 10000) return parseFloat((num / 10000).toFixed(2)) + "万";
+        else return parseFloat(num.toFixed(2));
+    }
+
+    let state = {
+        name: "", gold: 0, maxStage: 1, cStage: 1, hpMax: 10, hpCurrent: 10,
+        dmg: 1, critR: 0.0, critD: 150, deadlyD: 10,
+        
+        l_dmg: 0, c_dmg: 10, l_cR: 0, c_cR: 10, l_cD: 0, c_cD: 10, l_dd: 0, c_dd: 100000,
+        l_a0: 0, c_a0: 1000, l_a1: 0, c_a1: 10000, l_a2: 0, c_a2: 100000,
+        l_a3: 0, c_a3: 1000000, l_a4: 0, c_a4: 10000000, l_a5: 0, c_a5: 100000000,
+
+        quests: [0,0,0,0,0,0,0,0,0,0,0],
+
+        rebirthCount: 0, dsp: 0, pendingDsp: 0, 
+        t_huntian: 0, t_jingu: 0, t_sanjian: 0, t_yujing: 0, t_lianhua: 0, t_kaitian: 0
+    };
+
+    let isAutoRebirth = false;
+    const upgradeKeys = ['dmg', 'cR', 'cD', 'dd', 'a0', 'a1', 'a2', 'a3', 'a4', 'a5'];
+    const csMap = {'dmg':'c_dmg','cR':'c_cR','cD':'c_cD','dd':'c_dd','a0':'c_a0','a1':'c_a1','a2':'c_a2','a3':'c_a3','a4':'c_a4','a5':'c_a5'};
+
+    const questDefs = [
+        { desc: "初入红尘·击败第1只怪物", check: () => state.maxStage > 1, rewardBase: 100, type: 'gold' },
+        { desc: "降伏尝试·解锁基础挂机系统", check: () => state.l_a0 > 0, rewardBase: 1000, type: 'gold' },
+        { desc: "结交天神·召哪吒加入战局", check: () => state.l_a1 > 0, rewardBase: 10000, type: 'gold' },
+        { desc: "天眼神兵·唤杨戬加持界点", check: () => state.l_a2 > 0, rewardBase: 100000, type: 'gold' },
+        { desc: "斩断尘缘·破阵第10轮核心", check: () => state.maxStage > 100, rewardBase: 500000, type: 'gold' },
+        { desc: "大圣归来·呼唤齐天大圣", check: () => state.l_a3 > 0, rewardBase: 1000000, type: 'gold' },
+        { desc: "轮回破虚·首尝生死逆天之阵", check: () => state.rebirthCount >= 1, rewardBase: 20, type: 'dsp' },
+        { desc: "踏破凌霄·破阵第12轮神劫", check: () => state.maxStage > 120, rewardBase: 5000000, type: 'gold' },
+        { desc: "佛光普照·请观音大士临空", check: () => state.l_a4 > 0, rewardBase: 10000000, type: 'gold' },
+        { desc: "无界降魔·破除第15轮魔界", check: () => state.maxStage > 150, rewardBase: 50000000, type: 'gold' },
+        { desc: "梵音天降·如来佛祖镇五指", check: () => state.l_a5 > 0, rewardBase: 100000000, type: 'gold' }
+    ];
+
+    const treasDefs = {
+        huntian: { name: "混天绫", baseCost: 100, stepMult: 0.1, baseEff: 10, unit: "%", desc: "暴击概率", color: "#ff9ff3" },
+        jingu:   { name: "金箍棒", baseCost: 150, stepMult: 0.1, baseEff: 2, unit: "%", desc: "致命降临", color: "#feca57" },
+        sanjian: { name: "三尖两刃刀", baseCost: 200, stepMult: 0.1, baseEff: 100, unit: "%", desc: "暴击增陨", color: "#48dbfb" },
+        yujing:  { name: "玉净瓶", baseCost: 300, stepMult: 0.1, baseEff: 100, unit: "%", desc: "金币敛聚", color: "#1dd1a1" },
+        lianhua: { name: "莲花宝座", baseCost: 500, stepMult: 0.1, baseEff: 20, unit: "倍", desc: "致死加倍", color: "#ff6b6b" },
+        kaitian: { name: "开天巨斧", baseCost: 1000, stepMult: 0.1, baseEff: 100, unit: "%", desc: "根基战力", color: "#ff3838" }
+    };
+
+    let isBoss = false, bossExpireTime = 0;
+    let lastLogicTick = Date.now(), autoAttackAccumulator = 0;
+
+    const mythicNames = ['饕餮', '穷奇', '梼杌', '混沌', '白泽', '麒麟', '凤凰', '九尾狐', '毕方', '重明鸟', '蠃鱼', '青龙', '白虎', '朱雀', '玄武', '化蛇', '九婴', '相柳', '烛龙', '帝江', '蛊雕', '狸力', '举父', '猾褢', '长右', '旋龟', '颙'];
+    const emojis = ['👾', '👽', '🐢', '🐉', '🐲', '🦅', '🦁', '🐍', '🦇', '🌋', '👺', '👹', '🦖', '🦑'];
+    const elMonsterArea = document.getElementById('monster-area');
+    const elMonster = document.getElementById('monster');
+    const hpCache = { 1: 10 };
+
+    function getStageHp(st) {
+        if(hpCache[st]) return hpCache[st];
+        for(let i=2; i<=st; i++) { if(!hpCache[i]) hpCache[i] = Math.ceil(hpCache[i-1]*1.1); }
+        return hpCache[st];
+    }
+
+    function getTreasureEff(id) { let lv = state['t_' + id]; return lv === 0 ? 0 : treasDefs[id].baseEff * (1 + (lv - 1) * 0.01); }
+    function getTreasureCost(id) { let lv = state['t_' + id]; return lv === 0 ? treasDefs[id].baseCost : Math.floor(treasDefs[id].baseCost * treasDefs[id].stepMult); }
+
+    function getActualCR() { return state.critR + getTreasureEff('huntian'); }
+    function getActualCD() { return state.critD + getTreasureEff('sanjian'); }
+    function getActualDR() { return (state.l_dd > 0 ? 1 : 1) + getTreasureEff('jingu'); }
+    function getActualDD() { return state.deadlyD + getTreasureEff('lianhua'); }
+    function getActualAtkMult() { return 1 + getTreasureEff('kaitian') / 100; }
+    function getActualCoinMult() { return 1 + getTreasureEff('yujing') / 100; }
+
+    function startGame() { let nm = document.getElementById('player-name-input').value.trim(); state.name = nm || "无名散仙"; finalizeLoad(); }
+    
+    // 手动导存出入
+    function exportSaveData() {
+        let ds = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+        let dl = document.createElement('a'); dl.setAttribute("href", ds); dl.setAttribute("download", `${state.name}_星图档案.json`);
+        document.body.appendChild(dl); dl.click(); dl.remove();
+    }
+    function importSaveData(event) {
+        let f = event.target.files[0]; if(!f) return; let r = new FileReader();
+        r.onload = e => {
+            try { 
+                let d = JSON.parse(e.target.result); Object.assign(state, d); 
+                while(state.quests.length < questDefs.length) state.quests.push(0); 
+                finalizeLoad(); 
+            } catch(err){ alert("记忆粉碎，载卷溃散！"); }
+        }; r.readAsText(f); event.target.value = '';
+    }
+
+    // 自动存档机制
+    function loadAutoSave() {
+        let saved = localStorage.getItem('lz_auto_save');
+        if(saved) {
+            try {
+                let d = JSON.parse(saved); Object.assign(state, d);
+                while(state.quests.length < questDefs.length) state.quests.push(0);
+                finalizeLoad();
+            } catch (e) { alert("自动快照已损坏"); }
+        } else {
+            alert("未感应到天道自动留存的踪迹...");
+        }
+    }
+    
+    setInterval(() => {
+        if(state.name !== "") {
+            localStorage.setItem('lz_auto_save', JSON.stringify(state));
+            let d = new Date();
+            let tm = d.getHours().toString().padStart(2,'0') + ":" + d.getMinutes().toString().padStart(2,'0');
+            document.getElementById('auto-save-time').innerText = "已自动存档 " + tm;
+        }
+    }, 60000);
+    
+    function finalizeLoad() {
+        document.getElementById('start-overlay').style.display = 'none'; 
+        document.getElementById('display-name').innerText = `【${state.name}】 的试炼`;
+        if (state.pendingDsp === undefined) state.pendingDsp = (state.runMonsters || 0) * 1 + (state.runBosses || 0) * 3;
+        initQuestDOM(); initTreasuresDOM(); 
+        spawnMonster(state.cStage, true); lastLogicTick = Date.now(); updateUI();
+        
+        // Disable pure user interaction over upgrade blocks if auto is heavily involved
+        uiSyncAutoMode();
+    }
+
+    // 新增：自动挂机主逻辑
+    function toggleAutoRebirth() {
+        isAutoRebirth = !isAutoRebirth;
+        let btn = document.getElementById('btn-toggle-auto');
+        let inpt = document.getElementById('auto-stage-input');
+        if (isAutoRebirth) {
+            let t = parseInt(inpt.value);
+            if(isNaN(t) || t < 10) { alert("目标破劫魔尊轮次极值必须 >= 10"); isAutoRebirth = false; return; }
+            btn.innerText = "🚨 停止全自动循环"; btn.classList.add('active'); inpt.disabled = true;
+            processAutoUpgrade(); // 立刻触发一次榨干行动
+        } else {
+            btn.innerText = "开启全自动挂机"; btn.classList.remove('active'); inpt.disabled = false;
+        }
+        uiSyncAutoMode();
+    }
+
+    function uiSyncAutoMode() {
+        let upgDomArray = document.querySelectorAll('.upg-item');
+        upgDomArray.forEach(el => {
+            // Only affect the upgrades grid, not other upg-items (like modal buttons)
+            if(el.parentElement.id === 'upgrades-dom') {
+                if(isAutoRebirth) { el.classList.add('disabled-in-auto'); }
+                else { el.classList.remove('disabled-in-auto'); }
+            }
+        });
+        updateUI();
+    }
+
+    function processAutoUpgrade() {
+        if(!isAutoRebirth) return;
+        let boughtAny = true, loopBreaker = 10000;
+        while(boughtAny && loopBreaker > 0) {
+            boughtAny = false; loopBreaker--;
+            for(let k of upgradeKeys) {
+                let ck = csMap[k];
+                if(state.gold >= state[ck]) {
+                    state.gold -= state[ck];
+                    if(k==='dmg'){ state.dmg+=Math.pow(2, Math.floor(state.l_dmg/20)); state.l_dmg++; state[ck]=Math.ceil(state[ck]*1.1); }
+                    if(k==='cR'){ state.critR+=0.1; state.l_cR++; state[ck]=Math.ceil(state[ck]*1.1); }
+                    if(k==='cD'){ state.critD+=1; state.l_cD++; state[ck]=Math.ceil(state[ck]*1.1); }
+                    if(k==='dd'){ state.deadlyD+=1; state.l_dd++; state[ck]*=2; }
+                    if(k.startsWith('a')){ state['l_'+k]++; state[ck]=Math.ceil(state[ck]*1.1); }
+                    boughtAny = true;
+                }
+            }
+        }
+        if(loopBreaker === 0) console.warn("Auto-upgrade safely throttled.");
+        updateUI();
+    }
+
+    function initQuestDOM() {
+        let htmlList = '';
+        questDefs.forEach((q, i) => {
+            let rText = q.type === 'dsp' ? `${q.rewardBase}界点` : `${f(q.rewardBase)} 金币`;
+            htmlList += `
+            <div class="quest-item">
+                <span>[星轴-${i+1}] ${q.desc} <span style="font-size:11px;color:#aaa;">(赏金: ${rText})</span></span>
+                <button id="btn-quest-${i}" class="btn-claim" disabled>未达标</button>
+            </div>`;
+        });
+        document.getElementById('quest-list').innerHTML = htmlList;
+    }
+    
+    function processQuests() {
+        questDefs.forEach((q, i) => {
+            if (state.quests[i] === 0 && q.check()) state.quests[i] = 1; 
+            let btn = document.getElementById(`btn-quest-${i}`); if(!btn) return;
+            if (state.quests[i] === 0) { btn.className = "btn-claim"; btn.disabled = true; btn.innerText = "未达标"; btn.onclick = null; }
+            else if (state.quests[i] === 1) { btn.className = "btn-claim active"; btn.disabled = false; btn.innerText = `🎁破卷金夺`; btn.onclick = () => claimQuest(i); }
+            else if (state.quests[i] === 2) { btn.className = "btn-claim done"; btn.disabled = true; btn.innerText = "✅印刻史册"; btn.onclick = null; }
+        });
+    }
+    
+    function claimQuest(idx) {
+        if (state.quests[idx] === 1) {
+            let q = questDefs[idx];
+            if(q.type === 'gold') state.gold += q.rewardBase;
+            if(q.type === 'dsp') state.dsp += q.rewardBase;
+            state.quests[idx] = 2; updateUI(); 
+            // 如果获取了赏单金币则触发挂机购入
+            if(isAutoRebirth) processAutoUpgrade();
+        }
+    }
+
+    function initTreasuresDOM() {
+        let h = '';
+        const ids = ['huntian', 'jingu', 'sanjian', 'yujing', 'lianhua', 'kaitian'];
+        ids.forEach(id => {
+            let def = treasDefs[id];
+            h += `<div class="treasure-item locked" id="tb-${id}" onclick="buyTreasure('${id}')">
+                <strong style="color:${def.color};font-size:13px;margin-bottom:4px;">${def.name} <span id="tb-lv-${id}" style="font-size:11px;color:#fff;"></span></strong>
+                <span style="color:#dfe6e9;font-size:11px;line-height:1.4;">${def.desc}:<br/><strong id="tb-eff-${id}" style="color:#00cec9;">+0</strong>
+                <span id="tb-next-${id}" style="font-size:10px;color:#888;"></span></span>
+                <span id="tb-cost-${id}" style="color:#fbc531;font-size:11px;margin-top:4px;"></span>
+            </div>`;
+        });
+        document.getElementById('treasure-grid').innerHTML = h;
+    }
+
+    function updateTreasuresUI() {
+        const ids = ['huntian', 'jingu', 'sanjian', 'yujing', 'lianhua', 'kaitian'];
+        ids.forEach(id => {
+            let def = treasDefs[id], lv = state['t_'+id], cost = getTreasureCost(id);
+            let noDSP = state.dsp < cost, el = document.getElementById(`tb-${id}`); if (!el) return;
+            if (lv > 0) el.className = `treasure-item owned ${noDSP ? 'cant-up' : ''}`; else el.className = `treasure-item ${noDSP ? 'locked' : ''}`;
+
+            document.getElementById(`tb-lv-${id}`).innerText = lv === 0 ? "" : `(Lv.${lv})`;
+            document.getElementById(`tb-eff-${id}`).innerText = `+${getTreasureEff(id).toFixed(1)}${def.unit}`;
+            let nextEff = lv === 0 ? def.baseEff : def.baseEff * (1 + lv * 0.01);
+            document.getElementById(`tb-next-${id}`).innerText = `(下界: +${nextEff.toFixed(1)}${def.unit})`;
+            let actName = lv === 0 ? '法阵凝聚' : '升阶淬炼';
+            document.getElementById(`tb-cost-${id}`).innerText = `[${actName}: ${cost}点]`;
+        });
+    }
+    
+    function buyTreasure(id) { let c = getTreasureCost(id); if (state.dsp >= c) { state.dsp -= c; state['t_'+id]++; updateUI(); } }
+
+    function doRebirth(skipConfirm = false) {
+        let gained = state.pendingDsp || 0;
+        if(!skipConfirm && !confirm(`此番涅槃，肉相与金山尽毁！\n然此番劫数换取 ${gained} 降妖不灭精华点数。\n可决断否？`)) return;
+        
+        state.dsp += gained; state.pendingDsp = 0; state.rebirthCount++;
+        state.cStage = 1; state.maxStage = 1;
+        state.dmg = 1; state.critR = 0; state.critD = 150; state.deadlyD = 10;
+        state.l_dmg = 0; state.c_dmg = 10; state.l_cR = 0; state.c_cR = 10; state.l_cD = 0; state.c_cD = 10; state.l_dd = 0; state.c_dd = 100000;
+        state.l_a0 = 0; state.c_a0 = 1000; state.l_a1 = 0; state.c_a1 = 10000; state.l_a2 = 0; state.c_a2 = 100000;
+        state.l_a3 = 0; state.c_a3 = 1000000; state.l_a4 = 0; state.c_a4 = 10000000; state.l_a5 = 0; state.c_a5 = 100000000;
+        
+        state.gold = Math.ceil(1000000 * getActualCoinMult()); 
+        spawnMonster(state.cStage, true);
+        
+        // 自动重生后的金钱直接全部注入系统内
+        if(isAutoRebirth) processAutoUpgrade();
+    }
+
+    function getTotalAutoRate() {
+        let t = 0;
+        if(state.l_a0>0)t+=120+(state.l_a0-1)*2; 
+        if(state.l_a1>0)t+=50+(state.l_a1-1)*10; 
+        if(state.l_a2>0)t+=100+(state.l_a2-1)*20; 
+        if(state.l_a3>0)t+=150+(state.l_a3-1)*30;
+        if(state.l_a4>0)t+=250+(state.l_a4-1)*50; 
+        if(state.l_a5>0)t+=500+(state.l_a5-1)*100;
+        return t;
+    }
+
+    setInterval(() => {
+        let now = Date.now(); let delta = now - lastLogicTick; lastLogicTick = now;
+        if (isBoss && bossExpireTime > 0) {
+            let leftS = Math.ceil((bossExpireTime - now)/1000);
+            if (leftS <= 0) { bossExpireTime = 0; state.cStage--; spawnMonster(state.cStage, true); } 
+            else { document.getElementById('timer-text').innerText = leftS; }
+        }
+        let tr = getTotalAutoRate();
+        if (tr > 0) {
+            autoAttackAccumulator += (tr / 60000) * delta;
+            if (autoAttackAccumulator >= 1) { let cts = Math.floor(autoAttackAccumulator); autoAttackAccumulator -= cts; batchSimulateAttacks(cts); }
+        }
+    }, 100);
+
+    function buildFloatDmg(x, y, dmg, type, isAuto) {
+        const d = document.createElement('div'); d.classList.add('floating-damage');
+        const mk = isAuto ? `<span class="auto-dmg-mark">🤖</span>` : ``;
+        if (type === 'deadly') { d.classList.add('deadly-damage'); d.innerHTML = `${mk}☠️ -${f(dmg)}`; } 
+        else if (type === 'crit') { d.classList.add('crit-damage'); d.innerHTML = `${mk}💥 -${f(dmg)}`; } 
+        else { d.innerHTML = `${mk}-${f(dmg)}`; }
+        let rx = (Math.random() - 0.5) * 80; let rect = elMonsterArea.getBoundingClientRect();
+        d.style.left = (x - rect.left - 30 + rx) + 'px'; d.style.top = (y - rect.top - 20) + 'px';
+        elMonsterArea.appendChild(d); setTimeout(() => d.remove(), 800);
+    }
+
+    function batchSimulateAttacks(count) {
+        let aCR=getActualCR(), aCD=getActualCD(), aDR=getActualDR(), aDD=getActualDD(), aAtkMult=getActualAtkMult();
+        let baseDmg=state.dmg*aAtkMult, aLeft=count, lc=2000, batchTotal=0, anyC=false, anyD=false;
+        
+        while(aLeft > 0 && lc > 0 && state.hpCurrent > 0) {
+            if(aLeft < 60) {
+                let isC = (Math.random()*100)<aCR, isD = (Math.random()*100)<aDR, fd = baseDmg;
+                if(isC) { fd = Math.ceil(fd * (aCD/100)); anyC = true; }
+                if(isD) { fd *= aDD; anyD = true; }
+                state.hpCurrent -= fd; batchTotal += fd; aLeft--;
+                if(state.hpCurrent <= 0) defeatHandling(); 
+            } else {
+                let evDmg = baseDmg * (1 - (aCR/100) + (aCR/100)*(aCD/100)) * (1 - (aDR/100) + (aDR/100)*aDD);
+                let hitK = Math.ceil(state.hpCurrent / Math.max(1, evDmg));
+                if(hitK <= aLeft) { batchTotal += state.hpCurrent; aLeft -= hitK; state.hpCurrent = 0; anyC = true; defeatHandling(); } 
+                else { state.hpCurrent -= (evDmg * aLeft); batchTotal += (evDmg * aLeft); anyC = true; aLeft = 0; }
+            } lc--;
+        }
+        if(batchTotal > 0 && document.visibilityState==='visible') {
+            const rt = elMonsterArea.getBoundingClientRect();
+            buildFloatDmg(rt.left + rt.width/2, rt.top + rt.height/2 + (Math.random()-0.5)*50, batchTotal, anyD?'deadly':(anyC?'crit':'normal'), true);
+        } updateUI(); 
+    }
+
+    function attackHnd(event) {
+        if (state.hpCurrent <= 0) return;
+        elMonster.classList.remove('hit'); void elMonster.offsetWidth; elMonster.classList.add('hit');
+        let aCR=getActualCR(), aCD=getActualCD(), aDR=getActualDR(), aDD=getActualDD();
+        let isC=(Math.random()*100)<aCR, isD=(Math.random()*100)<aDR, fd=state.dmg*getActualAtkMult();
+        if(isC) fd=Math.ceil(fd*(aCD/100)); if(isD) fd*=aDD;
+        state.hpCurrent -= fd;
+        let t='normal'; if(isD)t='deadly'; else if(isC)t='crit';
+        buildFloatDmg(event.clientX, event.clientY, fd, t, false);
+        if(state.hpCurrent<=0) defeatHandling(); else updateUI();
+    }
+
+    function getUpgradeCost(k, times) {
+        let c = state[csMap[k]], sum = 0;
+        for (let i = 0; i < times; i++) { sum += c; c = (k === 'dd') ? c * 2 : Math.ceil(c * 1.1); } return sum;
+    }
+
+    function updateUI() {
+        processQuests(); updateTreasuresUI();
+        let rawActualAtk = state.dmg * getActualAtkMult();
+
+        document.getElementById('gold').innerText = f(state.gold);
+        document.getElementById('stat-dmg').innerText = f(rawActualAtk);
+        document.getElementById('stat-auto').innerText = f(getTotalAutoRate());
+        document.getElementById('stat-crit-rate').innerText = getActualCR().toFixed(1);
+        document.getElementById('stat-crit-dmg').innerText = f(getActualCD());
+        document.getElementById('stat-deadly-rate').innerText = getActualDR().toFixed(2);
+        document.getElementById('stat-deadly-dmg').innerText = f(getActualDD());
+        
+        document.getElementById('stat-rebirths').innerText = state.rebirthCount;
+        document.getElementById('stat-dsp').innerText = state.dsp;
+        
+        document.getElementById('current-rebirth-points').innerText = state.pendingDsp || 0;
+        let okReb = state.maxStage > 100;
+        document.getElementById('btn-rebirth').disabled = !okReb;
+        document.getElementById('r-lock-stage').innerText = Math.max(1, Math.ceil((state.maxStage-1)/10));
+        document.getElementById('rebirth-lock-text').style.display = okReb ? 'none' : 'block';
+
+        document.getElementById('hp-current').innerText = f(Math.max(0, state.hpCurrent));
+        document.getElementById('hp-max').innerText = f(state.hpMax);
+        document.getElementById('hp-bar').style.width = Math.max(0, (state.hpCurrent/state.hpMax)*100) + '%';
+        
+        const uiSyncUnit = (id, ck, lk, dOn, dUp) => {
+            let c1 = getUpgradeCost(id, 1), c10 = getUpgradeCost(id, 10);
+            document.getElementById(`cost-${id}-1`).innerText = f(c1); document.getElementById(`cost-${id}-10`).innerText = f(c10);
+            document.getElementById(`btn-${id}-1`).disabled = state.gold < c1; document.getElementById(`btn-${id}-10`).disabled = state.gold < c10;
+            
+            const btn10x = document.getElementById(`btn-${id}-10`);
+            if (['a0','a1','a2','a3','a4','a5'].includes(id) && state[lk] === 0) { btn10x.style.display = 'none'; } 
+            else { btn10x.style.display = 'inline-block'; }
+
+            if(state[lk] === 0 && !['dmg','cR','cD','dd'].includes(id)) {
+                document.getElementById(`lvl-${id}`).innerText = `[未召唤]`; document.getElementById(`desc-${id}`).innerText = dOn;
+            } else {
+                document.getElementById(`lvl-${id}`).innerText = `[Lv.${state[lk]}]`;
+                if(document.getElementById(`desc-${id}`)) document.getElementById(`desc-${id}`).innerText = dUp;
+            }
+        };
+        
+        uiSyncUnit('dmg','c_dmg','l_dmg',null,`下阶跃升 +${f(Math.pow(2, Math.floor(state.l_dmg/20)))} 基础伤害`);
+        uiSyncUnit('cR','c_cR','l_cR',null,null); uiSyncUnit('cD','c_cD','l_cD',null,null); uiSyncUnit('dd','c_dd','l_dd',null,null);
+        uiSyncUnit('a0','c_a0','l_a0','基准跃出 120 次/分','等级跃出 +2/分');
+        uiSyncUnit('a1','c_a1','l_a1','三昧真火 50次/分','灵蕴提升 +10/分');
+        uiSyncUnit('a2','c_a2','l_a2','天眼神威 100次/分','神威灌注 +20/分');
+        uiSyncUnit('a3','c_a3','l_a3','通天一棍 150次/分','棍法升华 +30/分');
+        uiSyncUnit('a4','c_a4','l_a4','大慈悲咒 250次/分','妙法莲华 +50/分');
+        uiSyncUnit('a5','c_a5','l_a5','万佛无界 500次/分','梵音阵阵 +100/分');
+
+        document.getElementById('btn-challenge').style.display = (state.cStage < state.maxStage) ? 'inline-block' : 'none';
+    }
+
+    function buyStateUpg(k, times) {
+        let cost = getUpgradeCost(k, times);
+        let ck = csMap[k];
+        if(state.gold >= cost) {
+            state.gold -= cost;
+            for(let i=0; i<times; i++) {
+                if(k==='dmg'){ state.dmg+=Math.pow(2, Math.floor(state.l_dmg/20)); state.l_dmg++; state[ck]=Math.ceil(state[ck]*1.1); }
+                if(k==='cR'){ state.critR+=0.1; state.l_cR++; state[ck]=Math.ceil(state[ck]*1.1); }
+                if(k==='cD'){ state.critD+=1; state.l_cD++; state[ck]=Math.ceil(state[ck]*1.1); }
+                if(k==='dd'){ state.deadlyD+=1; state.l_dd++; state[ck]*=2; }
+                if(k.startsWith('a')){ state['l_'+k]++; state[ck]=Math.ceil(state[ck]*1.1); }
+            }
+            updateUI();
+        }
+    }
+
+    function spawnMonster(st, resHp=false) {
+        let rnd = Math.ceil(st/10), midx = (st-1)%10+1; isBoss = (midx===10);
+        let sInD = document.getElementById('stage-info-text');
+        
+        if(isBoss) { 
+            sInD.innerHTML=`第 ${rnd} 轮 - 🌟 <span style="color:#ff6b81">本源魔核·${mythicNames[(st*13)%mythicNames.length]}</span>`; 
+            document.getElementById('boss-timer-wrap').style.display='inline-block'; 
+            bossExpireTime=Date.now()+90000; 
+        } else { 
+            sInD.innerHTML=`<span style="color:#2ed573;">第 ${rnd} 轮 - 第 ${midx} 重煞印 [${mythicNames[(st*13)%mythicNames.length]}]</span>`; 
+            document.getElementById('boss-timer-wrap').style.display='none'; 
+            bossExpireTime=0; 
+        }
+        
+        elMonster.className = isBoss ? 'monster boss' : 'monster';
+        elMonster.style.backgroundColor = `hsl(${(isBoss?rnd*55:st*30)%360}, ${isBoss?65:30}%, 45%)`;
+        elMonster.innerText = emojis[(st*7)%emojis.length];
+        state.hpMax = getStageHp(st); 
+        if (resHp || state.hpCurrent <= 0) state.hpCurrent = state.hpMax; 
+        updateUI();
+    }
+    
+    function challengeBoss() { state.cStage = state.maxStage; spawnMonster(state.cStage, true); }
+
+    function defeatHandling() {
+        let coinMT = getActualCoinMult(), round = Math.ceil(state.cStage / 10);
+        let dspMult = round < 5 ? 1 : (Math.floor(round / 5) + 1);
+        
+        state.pendingDsp += (isBoss ? 3 : 1) * dspMult;
+
+        if (isBoss) { state.gold += Math.ceil((state.hpMax*3)*coinMT); bossExpireTime=0; document.getElementById('boss-timer-wrap').style.display='none'; }
+        else { state.gold += Math.ceil(state.hpMax * coinMT); }
+        if (state.cStage === state.maxStage) { state.maxStage++; state.cStage++; }
+        
+        // 智械操作触发链：每次获金即触发升品
+        if (isAutoRebirth) {
+            processAutoUpgrade();
+            let aiTarget = parseInt(document.getElementById('auto-stage-input').value);
+            // 本次打死的是目标论次的Boss (通过倒推计算)
+            if (isBoss && round === aiTarget) {
+                doRebirth(true);
+                return; // 重生本身内置了 spawnMonster
+            }
+        }
+        
+        spawnMonster(state.cStage, true);
+    }
+</script>
+</body>
+</html>

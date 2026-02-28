@@ -3,191 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>洪荒仙录 - 寻道大千版</title>
+    <title>洪荒仙录 - 破境真传版</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif; background-color: #0b0f14; color: #dfe6e9; text-align: center; margin: 0; padding: 0; user-select: none; display: flex; justify-content: center; height: 100vh; overflow: hidden; -webkit-tap-highlight-color: transparent;}
-        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #dcb974, #8a6d3b); border-radius: 4px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif; background-color: #edebe1; color: #5c5346; text-align: center; margin: 0; padding: 0; user-select: none; display: flex; justify-content: center; height: 100vh; overflow: hidden; -webkit-tap-highlight-color: transparent;}
+        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: #b5c7b9; border-radius: 4px; }
         
-        #rebirth-flash { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, #fff 0%, #f1c40f 60%, rgba(255,255,255,0) 100%); z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.8s ease-in-out; display: none; align-items: center; justify-content: center; }
-        .rebirth-text { font-size: 55px; font-weight: 900; color: #fff; letter-spacing: 8px; text-shadow: 0 0 20px #8e44ad, 0 0 40px #d35400, 0 0 60px #c0392b; opacity: 0; transform: scale(0.2); transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #rebirth-flash { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, #fff 0%, #fde7cc 50%, rgba(255,255,255,0) 100%); z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.8s ease-in-out; display: none; align-items: center; justify-content: center; }
+        .rebirth-text { font-size: 55px; font-weight: 900; color: #d48a42; letter-spacing: 8px; text-shadow: 0 0 20px #fff, 0 4px 5px rgba(0,0,0,0.2); opacity: 0; transform: scale(0.2); transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
-        .viewport { display: flex; flex-direction: column; width: 100%; max-width: 600px; height: 100vh; background: #121820; box-shadow: 0 0 30px rgba(0,0,0,0.9); transition: opacity 1s ease-in-out; position: relative;}
+        .viewport { display: flex; flex-direction: column; width: 100%; max-width: 500px; height: 100vh; background: #f7f5ef; box-shadow: 0 0 20px rgba(92, 83, 70, 0.15); transition: opacity 1s ease-in-out; position: relative;}
         
-        .top-panel { padding: 8px 12px 10px 12px; background: linear-gradient(180deg, #182433 0%, #11171f 100%); border-bottom: 2px solid #4a3a24; flex-shrink: 0; position:relative; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.6);}
-        .scroll-panel { flex: 1; overflow-y: auto; padding: 15px; background-color: #141a22; background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 15px 15px; position: relative; }
+        .top-panel { padding: 6px 12px 6px 12px; background: rgba(249,247,242,0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 2px solid #e8e3d8; flex-shrink: 0; position:relative; z-index: 10; box-shadow: 0 4px 10px rgba(120,158,131,0.06);}
+        .scroll-panel { flex: 1; overflow-y: auto; padding: 12px; background-color: #f7f5ef; background-image: radial-gradient(#e3dfd3 1px, transparent 1px); background-size: 14px 14px; position: relative; }
         
-        .tab-bar { display: flex; flex-shrink: 0; background: #0c1117; border-top: 1px solid #233140; height: 60px; box-shadow: 0 -4px 10px rgba(0,0,0,0.5); padding-bottom: env(safe-area-inset-bottom);}
-        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #63768d; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border-bottom: 3px solid transparent;}
-        .tab-icon { font-size: 18px; margin-bottom: 2px; filter: grayscale(1); transition: 0.3s; }
-        .tab-item.active { color: #dcb974; background: radial-gradient(ellipse at bottom, rgba(220,185,116,0.15) 0%, transparent 60%); position: relative; }
-        .tab-item.active .tab-icon { filter: grayscale(0) drop-shadow(0 0 5px rgba(220,185,116,0.6)); transform: translateY(-2px);}
-        .tab-item.active::after { content: ''; position: absolute; bottom: 0; left: 20%; width: 60%; height: 3px; background: #dcb974; border-radius: 3px 3px 0 0; box-shadow: 0 0 8px #dcb974;}
+        .tab-bar { display: flex; flex-shrink: 0; background: #fbfaeb; border-top: 1px solid #e8e3d8; height: 60px; box-shadow: 0 -2px 10px rgba(0,0,0,0.04); padding-bottom: env(safe-area-inset-bottom);}
+        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9c9285; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border-bottom: 3px solid transparent;}
+        .tab-icon { font-size: 20px; margin-bottom: 2px; filter: grayscale(1); transition: 0.3s; opacity: 0.8;}
+        .tab-item.active { color: #5a8a65; background: radial-gradient(ellipse at bottom, rgba(90,138,101,0.08) 0%, transparent 60%); position: relative; }
+        .tab-item.active .tab-icon { filter: grayscale(0) drop-shadow(0 0 4px rgba(90,138,101,0.2)); transform: translateY(-2px); opacity: 1;}
+        .tab-item.active::after { content: ''; position: absolute; bottom: 0; left: 30%; width: 40%; height: 3px; background: #5a8a65; border-radius: 3px 3px 0 0;}
 
-        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-        .header-name { font-size: 15px; font-weight: bold; color: #00cec9; text-shadow: 0 0 8px rgba(0,206,201,0.5); border-left: 3px solid #00cec9; padding-left: 6px;}
-        .save-load-btn { background: linear-gradient(180deg, #3a4b5c 0%, #202b36 100%); color: #fff; border: 1px solid #556c82; padding: 3px 8px; border-radius: 12px; cursor: pointer; font-size: 10px; margin-left: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight:bold;}
-        
-        .gold-display { display: inline-block; background: rgba(0,0,0,0.5); border: 1px solid #dcb974; border-radius: 20px; padding: 3px 15px; font-size: 18px; color: #ffd700; box-shadow: inset 0 0 10px rgba(220, 185, 116, 0.2), 0 2px 5px rgba(0,0,0,0.5); margin-bottom: 6px; font-weight: 900; letter-spacing: 1px;}
-        .gold-icon { display: inline-block; background: linear-gradient(135deg, #f1c40f, #d35400); color: #fff; font-size: 11px; font-weight: 900; width: 18px; height: 18px; line-height: 18px; text-align: center; border-radius: 50%; margin-right: 4px; vertical-align: middle; box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        /* 原生兜底用小圆球，防止未填配置图 */
+        .gold-icon { display: inline-flex; justify-content: center; align-items: center; background: radial-gradient(circle at top left, #f6b93b, #e58e26); color: #fff; font-size: 10px; font-weight: 900; width: 16px; height: 16px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); text-shadow: 0 1px 0px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.5);}
+        .dsp-icon { display: inline-flex; justify-content: center; align-items: center; background: radial-gradient(circle at top left, #a29bfe, #6c5ce7); color: #fff; font-size: 10px; font-weight: 900; width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 1px 2px rgba(0,0,0,0.1); text-shadow: 0 1px 0px rgba(0,0,0,0.2);}
 
-        /* 极致压缩属性面板：一行4个，共2行 */
-        .stats-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: linear-gradient(135deg, rgba(30,40,50,0.8), rgba(15,20,25,0.95)); border: 1px solid rgba(220, 185, 116, 0.25); border-radius: 8px; padding: 5px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 3px 6px rgba(0,0,0,0.6); margin-bottom: 8px; }
-        .stats-item { background: rgba(0,0,0,0.4); border-radius: 4px; padding: 3px 2px; text-align: center; border: 1px solid rgba(255,255,255,0.04); font-size: 9px; color: #7f8fa6; line-height: 1.2; box-shadow: inset 0 1px 2px rgba(0,0,0,0.5); overflow: hidden; white-space: nowrap;}
-        .stats-item .sv { display: block; font-size: 12px; font-weight: bold; margin-top: 1px; color: #fff; text-shadow: 0 1px 2px #000; }
-
-        /* 战斗区域加高 */
-        .monster-area { position: relative; min-height: 210px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid rgba(220, 185, 116, 0.3); box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.5); background: radial-gradient(circle at center 70%, #293b4c 0%, #151d26 60%, #0a0e14 100%); overflow: hidden; padding-bottom: 10px; flex: 1;}
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .header-name { font-size: 14px; font-weight: 900; color: #5a8a65; border-left: 4px solid #789e83; padding-left: 6px; letter-spacing: 0.5px;}
+        .save-load-btn { background: #fff; color: #7f786d; border: 1px solid #d5ceb8; padding: 4px 8px; border-radius: 10px; cursor: pointer; font-size: 11px; margin-left: 4px; box-shadow: 0 2px 2px rgba(0,0,0,0.03); font-weight:bold; transition: 0.1s;}
         
-        .stage-info { display: inline-block; background: rgba(46, 213, 115, 0.15); border: 1px solid rgba(46, 213, 115, 0.4); padding: 3px 12px; border-radius: 15px; color: #2ed573; font-size: 12px; font-weight: bold; position: absolute; top: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.5);}
-        .boss-timer { font-size: 11px; color: #ff4757; margin-left: 5px; animation: pulseText 1s infinite alternate; }
+        .stats-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; background: rgba(255,255,255,0.65); border: 1px solid #e1dcd0; border-radius: 10px; padding: 5px; box-shadow: inset 0 2px 8px rgba(255,255,255,1), 0 2px 5px rgba(92,83,70,0.03); margin-bottom: 0px; }
+        .stats-item { background: #fcfbf6; border-radius: 6px; padding: 3px 2px; text-align: center; border: 1px solid #f2eedf; font-size: 9px; color: #9c9285; line-height: 1.4; box-shadow: 0 2px 3px rgba(0,0,0,0.02); overflow: hidden; white-space: nowrap; font-weight:bold;}
+        .stats-item .sv { display: block; font-size: 12px; font-weight: 900; margin-top: 1px; color: #5a8a65; }
+
+        .monster-area { position: relative; min-height: 310px; flex: 1; border-radius: 12px; border: 2px solid #cedbcc; box-shadow: inset 0 0 15px rgba(255,255,255,0.7), 0 4px 10px rgba(92,83,70,0.08); background: linear-gradient(180deg, #e5eedf 0%, #f2f5ed 50%, #dee7d9 100%); overflow: hidden; display: flex; flex-direction: column; background-position: center; background-size: cover; background-repeat: no-repeat;}
+        
+        .stage-info { display: inline-block; background: rgba(255,255,255,0.85); border: 1px solid #b5c7b9; padding: 4px 12px; border-radius: 12px; color: #5a8a65; font-size: 11px; font-weight: 900; position: absolute; top: 10px; left: 10px; box-shadow: 0 2px 4px rgba(90,138,101,0.08); z-index: 15;}
+        .boss-timer { font-size: 11px; color: #d66453; margin-left: 5px; animation: pulseText 1s infinite alternate; }
         @keyframes pulseText { from { opacity: 1; } to { opacity: 0.5; } }
         
-        .monster-wrapper { position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; z-index: 10; cursor: pointer; margin-top: 25px;}
-        .monster-wrapper::after { content: ''; position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); width: 75px; height: 18px; background: radial-gradient(ellipse, rgba(0,0,0,0.7) 0%, transparent 70%); z-index: 1; pointer-events: none;}
+        .gold-display { position: absolute; right: 10px; top: 10px; margin: 0; font-size: 15px; padding: 3px 12px; z-index: 15; border-radius: 15px; background: #fffcf4; border: 2px solid #ecd3ac; color: #d48a42; box-shadow: 0 3px 6px rgba(212,138,66,0.15), inset 0 2px 3px rgba(255,255,255,1); font-weight: 900; letter-spacing: 1px;}
         
-        .monster { position: absolute; left: 0; top: 0; width: 100%; height: 100%; box-sizing: border-box; background-color: #576574; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-size: 44px; border: 2px solid rgba(255,255,255,0.15); box-shadow: inset 0 0 15px rgba(0,0,0,0.6), 0 5px 10px rgba(0,0,0,0.5); transition: transform 0.05s, box-shadow 0.05s, border-radius 0.2s; z-index: 10; pointer-events: none;}
-        .monster-wrapper:active .monster { transform: translateY(6px) !important; box-shadow: 0 0 0 rgba(0,0,0,0) !important; }
+        .battle-stage { position: relative; flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10;}
+        #avatars-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         
+        .monster-wrapper { position: relative; display: flex; align-items: center; justify-content: center; z-index: 10; cursor: pointer; transition: transform 0.05s;}
+        .monster-wrapper:active { transform: translateY(6px); }
+        .monster-wrapper::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); height: 18px; background: radial-gradient(ellipse, rgba(0,0,0,0.25) 0%, transparent 70%); z-index: 1; pointer-events: none;}
+        
+        .monster { position: absolute; left: 0; top: 0; width: 100%; height: 100%; box-sizing: border-box; background: linear-gradient(135deg, #bdd5cc, #e1e8d5); border-radius: 20%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; box-shadow: inset 0 0 10px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.1); transition: border-radius 0.2s; z-index: 10; pointer-events: none;}
         .monster.hit { animation: hitReaction 0.15s ease-out; }
-        @keyframes hitReaction { 0% { transform: scale(1); filter: brightness(1); } 20% { transform: scale(0.85); filter: brightness(2.5) drop-shadow(0 0 20px red); background-color: #ff4757 !important; } 100% { transform: scale(1); filter: brightness(1); } }
+        @keyframes hitReaction { 0% { filter: brightness(1); } 20% { filter: brightness(1.3) contrast(1.2) drop-shadow(0 0 15px #d66453); transform: rotate(2deg); } 100% { filter: brightness(1); transform: rotate(0deg); } }
         
-        .monster.boss { border-radius: 25%; outline: none; border: 2px solid #ff3838; animation: rainbowShadow 2s linear infinite, bossFloat 3s infinite ease-in-out; }
-        .monster-wrapper:active .monster.boss { transform: translateY(8px) !important; box-shadow: 0 0 0 transparent !important; animation: rainbowShadow 2s linear infinite !important; }
+        .monster.boss { border-radius: 50%; border: 3px solid #d66453; background: linear-gradient(135deg, #f3b1aa, #e78272); animation: rainbowShadow 2s linear infinite, bossFloat 3s infinite ease-in-out; }
         @keyframes bossFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        @keyframes rainbowShadow { 0% { box-shadow: 0 0 15px #ff0000; } 33% { box-shadow: 0 0 15px #00ff00; } 66% { box-shadow: 0 0 15px #0000ff; } 100% { box-shadow: 0 0 15px #ff0000; } }
+        @keyframes rainbowShadow { 0% { box-shadow: 0 0 12px rgba(214,100,83,0.5); } 50% { box-shadow: 0 0 15px rgba(230,170,100,0.5); } 100% { box-shadow: 0 0 12px rgba(214,100,83,0.5); } }
 
-        .monster-ghost { position: absolute; left: 0; top: 0; width: 100%; height: 100%; box-sizing: border-box; border-radius: 20%; display: flex; align-items: center; justify-content: center; font-size: 44px; z-index: 15; pointer-events: none; animation: ghost-shatter 0.35s forwards cubic-bezier(0.1, 0.9, 0.2, 1); border: 2px solid transparent;}
-        .monster-ghost.boss { border-radius: 25%; border-color:#ff3838; }
-        @keyframes ghost-shatter { 0% { transform: scale(1); opacity: 1; filter: sepia(0.5) brightness(1.5) drop-shadow(0 0 10px #ff0); } 100% { transform: scale(1.8) rotate(15deg); opacity: 0; filter: blur(5px) brightness(2); } }
+        /* 🔥彻底拔除出生死亡比例缩放动画 */
+        .monster-ghost { position: absolute; left: 0; top: 0; width: 100%; height: 100%; box-sizing: border-box; border-radius: 20%; display: flex; align-items: center; justify-content: center; z-index: 15; pointer-events: none; animation: ghost-shatter 0.35s forwards cubic-bezier(0.1, 0.9, 0.2, 1); border: 2px solid transparent;}
+        .monster-ghost.boss { border-radius: 50%; }
+        @keyframes ghost-shatter { 0% { transform: rotate(0deg); opacity: 0.8; filter: brightness(1.2); } 100% { transform: translateY(-15px) rotate(15deg); opacity: 0; filter: blur(4px) brightness(1.5); } }
+        
         .monster.spawn { animation: drop-spawn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important; }
-        @keyframes drop-spawn { 0% { transform: translateY(-200px) scale(0.6) rotate(-10deg); opacity: 0; } 50% { transform: translateY(10px) scale(1.05) rotate(5deg); opacity: 1; } 75% { transform: translateY(-5px) scale(0.98) rotate(-2deg); } 100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } }
-        .dust-l, .dust-r { position: absolute; bottom: 0; width: 30px; height: 12px; background: rgba(220,220,220,0.6); border-radius: 50%; z-index: 5; pointer-events: none; filter: blur(2px); }
-        .dust-l { left: 0; animation: dust-anim-l 0.4s forwards ease-out; }
-        .dust-r { right: 0; animation: dust-anim-r 0.4s forwards ease-out; }
-        @keyframes dust-anim-l { 0% { transform: translate(10px, 5px) scale(0.5); opacity:1; } 100% { transform: translate(-45px, -15px) scale(2.5); opacity:0; } }
-        @keyframes dust-anim-r { 0% { transform: translate(-10px, 5px) scale(0.5); opacity:1; } 100% { transform: translate(45px, -15px) scale(2.5); opacity:0; } }
+        @keyframes drop-spawn { 0% { transform: translateY(-100px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        
+        .dust-l, .dust-r { position: absolute; bottom: -5px; width: 35px; height: 12px; background: rgba(181,199,185,0.7); border-radius: 50%; z-index: 5; pointer-events: none; filter: blur(2px); }
+        .dust-l { left: -10px; animation: dust-anim-l 0.4s forwards ease-out; }
+        .dust-r { right: -10px; animation: dust-anim-r 0.4s forwards ease-out; }
+        @keyframes dust-anim-l { 0% { transform: translate(15px, 5px) scale(0.5); opacity:1; } 100% { transform: translate(-45px, -10px) scale(2.2); opacity:0; } }
+        @keyframes dust-anim-r { 0% { transform: translate(-15px, 5px) scale(0.5); opacity:1; } 100% { transform: translate(45px, -10px) scale(2.2); opacity:0; } }
 
-        .avatar { position: absolute; display: none; z-index: 5; pointer-events: none; filter: drop-shadow(0 0 5px rgba(255,255,255,0.6)); }
+        .avatar { position: absolute; display: none; z-index: 5; pointer-events: none; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15)); text-shadow: 0 1px 0 rgba(255,255,255,0.7); margin: 0;}
         .avatar.active { display: block; animation: avatar-jitter 0.1s infinite linear; }
-        .pos-a0 { left: -32px; top: 18px; font-size: 22px; animation-delay: 0.01s;}
-        .pos-a1 { left: -10px; top: -22px; font-size: 24px; animation-delay: 0.05s;}
-        .pos-a2 { right: -10px; top: -22px; font-size: 24px; animation-delay: 0.08s;}
-        .pos-a3 { right: -32px; top: 18px; font-size: 24px; animation-delay: 0.02s;}
-        .pos-a4 { left: calc(50% - 14px); top: -38px; font-size: 28px; animation-delay: 0.06s;}
-        .pos-a5 { right: -28px; bottom: 5px; font-size: 28px; animation-delay: 0.03s;}
-        @keyframes avatar-jitter { 0% { transform: translate(0, 0) rotate(0deg) scale(1.15); filter: brightness(1.7) drop-shadow(0 0 8px #ffeb3b); } 25% { transform: translate(2px, -1px) rotate(3deg) scale(1.15); } 50% { transform: translate(-2px, 2px) rotate(-3deg) scale(1.15); filter: brightness(1.2) drop-shadow(0 0 4px #ffeb3b); } 75% { transform: translate(-1px, -2px) rotate(3deg) scale(1.15); } 100% { transform: translate(1px, 1px) rotate(-3deg) scale(1.15); filter: brightness(1.7) drop-shadow(0 0 8px #ffeb3b); } }
+        @keyframes avatar-jitter { 
+            0%   { margin-left: 0px; margin-top: 0px; filter: brightness(1.1); transform: translate(-50%, -50%) rotate(0deg); } 
+            25%  { margin-left: 2px; margin-top: -1px; transform: translate(-50%, -50%) rotate(4deg); } 
+            50%  { margin-left: -2px; margin-top: 2px; filter: brightness(0.9); transform: translate(-50%, -50%) rotate(-4deg); } 
+            75%  { margin-left: -1px; margin-top: -2px; transform: translate(-50%, -50%) rotate(4deg); } 
+            100% { margin-left: 1px; margin-top: 1px; filter: brightness(1.1); transform: translate(-50%, -50%) rotate(-4deg); } 
+        }
 
-        .hp-bar-container { width: 70%; height: 14px; background: #111; border-radius: 8px; margin-top: 30px; overflow: hidden; position: relative; border: 1px solid #000; box-shadow: 0 0 0 2px #5a4b31, 0 4px 6px rgba(0,0,0,0.5); z-index: 10; }
-        .hp-bar { height: 100%; background: linear-gradient(180deg, #ff4757 0%, #c0392b 100%); width: 100%; transition: width 0.1s linear; box-shadow: inset 0 2px 2px rgba(255,255,255,0.3);}
-        .hp-text { position: absolute; top: 0; left: 0; width: 100%; text-align: center; font-size: 10px; line-height: 14px; font-weight: bold; color: #fff; text-shadow: 1px 1px 2px #000; }
+        .hp-bar-container { width: 75%; height: 14px; background: #e8e3d8; border-radius: 8px; overflow: hidden; position: relative; border: 2px solid #fff; box-shadow: 0 0 0 1px #d5ceb8, 0 3px 5px rgba(0,0,0,0.05); z-index: 10;}
+        .hp-bar { height: 100%; background: linear-gradient(90deg, #e78272 0%, #d66453 100%); width: 100%; transition: width 0.1s linear;}
+        .hp-text { position: absolute; top: 0; left: 0; width: 100%; text-align: center; font-size: 10px; line-height: 14px; font-weight: 900; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
         
-        .challenge-btn { position: absolute; bottom: 12px; right: 12px; background: linear-gradient(180deg, #e74c3c 0%, #8e1f14 100%); color: white; border: 2px solid #ff7979; padding: 5px 14px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4), inset 0 1px 2px rgba(255,255,255,0.3); z-index: 11; letter-spacing: 1px;}
-        .challenge-btn:active { transform: translateY(2px); box-shadow: 0 1px 4px rgba(231, 76, 60, 0.4); }
+        .challenge-btn { position: absolute; bottom: 10px; right: 10px; background: linear-gradient(180deg, #f2a65a 0%, #d48a42 100%); color: white; border: 2px solid #fff; padding: 5px 14px; border-radius: 15px; cursor: pointer; font-size: 12px; font-weight: 900; display: none; box-shadow: 0 3px 6px rgba(212,138,66,0.3), inset 0 2px 2px rgba(255,255,255,0.4); z-index: 11;}
+        .challenge-btn:active { transform: translateY(2px); box-shadow: 0 1px 3px rgba(212,138,66,0.3); }
         
-        .tab-content { display: none; animation: fadeIn 0.3s; }
+        .tab-content { display: none; animation: fadeIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .upgrades { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .upgrades { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         @media (max-width: 450px) { .upgrades { grid-template-columns: 1fr; } }
-        .toggle-high-btn { background: linear-gradient(135deg, #2b3a4a, #1a252f); color: #dcb974; width: 100%; border: 1px dashed #556c82; padding: 12px; border-radius: 8px; margin-top: 15px; cursor: pointer; font-weight: bold; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3);}
 
-        .upg-item { background: linear-gradient(135deg, #1e2a38 0%, #151d26 100%); border: 1px solid #2c3e50; border-left: 4px solid #3498db; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); text-align: left;}
-        .upg-item.disabled-in-auto { opacity: 0.5; pointer-events: none; filter: grayscale(50%); }
-        .upg-item .title-row { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 13px; color: #dcb974; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; margin-bottom: 2px;}
-        .lvl-badge { background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 10px; border: 1px solid #00cec9; color: #00cec9; font-size: 10px; margin-right: 4px;}
-        .upg-item .desc-row { font-size: 11px; line-height: 1.5; min-height: 34px; background: rgba(0,0,0,0.25); border: 1px solid rgba(0,0,0,0.5); padding: 5px; border-radius: 4px; color: #dfe6e9; box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);}
+        .upg-item { position: relative; overflow: hidden; background: rgba(255,255,255,0.8); border: 1px solid #e1dcd0; border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 5px; box-shadow: 0 2px 6px rgba(92,83,70,0.03); text-align: left; transition: transform 0.2s;}
+        .upg-item.disabled-in-auto { opacity: 0.6; pointer-events: none; filter: grayscale(10%); }
+        .summon-watermark { position: absolute; right: -5px; top: 15px; width: 80px; height: 80px; background-position: right center; background-size: contain; background-repeat: no-repeat; opacity: 0.12; pointer-events: none; z-index: 0; filter: grayscale(20%);}
+
+        .upg-item .title-row { position:relative; z-index:1; display: flex; justify-content: space-between; align-items: center; font-weight: 900; font-size: 13px; color: #5c5346; border-bottom: 1px dotted #e8e3d8; padding-bottom: 4px; margin-bottom: 2px;}
+        .lvl-badge { background: #fffdf5; padding: 2px 6px; border-radius: 6px; border: 1px solid #ecd3ac; color: #d48a42; font-size: 10px; margin-right: 4px; font-weight: 900;}
+        .upg-item .desc-row { position:relative; z-index:1; font-size: 11px; line-height: 1.4; min-height: 32px; background: rgba(247,245,239,0.5); padding: 4px 6px; border-radius: 6px; color: #7f786d; font-weight:bold;}
         
-        .upg-actions { display: flex; gap: 6px; margin-top: 2px;}
-        .upg-act-btn { flex: 1; background: linear-gradient(180deg, #2980b9 0%, #17425e 100%); border: 1px solid #3498db; color: #fff; border-radius: 6px; padding: 8px 0; font-size: 11px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2); cursor: pointer;}
-        .upg-act-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 1px 2px rgba(0,0,0,0.4); }
-        .upg-act-btn.btn-10x { background: linear-gradient(180deg, #d35400 0%, #8e3900 100%) !important; border: 1px solid #e67e22; }
-        .upg-act-btn:disabled { background: #2c3e50 !important; border: 1px solid #1a252f !important; color: #5a6b7c !important; box-shadow: none !important; cursor: not-allowed; }
+        .upg-actions { position:relative; z-index:1; display: flex; gap: 5px; margin-top: 4px;}
+        .upg-act-btn { flex: 1; background: linear-gradient(180deg, #85bb94 0%, #689f77 100%); border: none; color: #fff; border-radius: 6px; padding: 6px 2px; font-size: 11px; font-weight: 900; box-shadow: 0 3px 0 #528260, inset 0 1px 2px rgba(255,255,255,0.3); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; white-space: nowrap; line-height:1.1;}
+        .upg-act-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 0 0 #528260, inset 0 1px 2px rgba(0,0,0,0.1) !important; }
+        .upg-act-btn.btn-10x { background: linear-gradient(180deg, #f2a65a 0%, #d48a42 100%); box-shadow: 0 3px 0 #bc722f, inset 0 1px 2px rgba(255,255,255,0.3); }
+        .upg-act-btn.btn-10x:active:not(:disabled){ transform: translateY(3px); box-shadow: 0 0 0 #bc722f; }
+        .upg-act-btn:disabled { background: #d5ceb8 !important; color: #f7f5ef !important; box-shadow: 0 3px 0 #c2bba7 !important; cursor: not-allowed; }
         
-        .item-core { border-left-color: #0984e3; } .item-deadly { border-left-color: #9b59b6; }
-        .item-auto { border-left-color: #95a5a6; } .item-nezha { border-left-color: #e74c3c; } 
-        .item-yangjian { border-left-color: #00cec9; } .item-wukong { border-left-color: #e67e22; }
-        .item-guanyin { border-left-color: #fd79a8; } .item-rulai { border-left-color: #f1c40f; }
+        .upg-act-btn * { pointer-events: none; }
 
-        .treasure-header { font-size: 14px; color: #dcb974; font-weight: bold; margin-bottom: 15px; padding: 10px; background: linear-gradient(90deg, #1e2a38 0%, #151d26 100%); border-radius: 8px; text-align: left; border: 1px solid #34495e; border-left: 4px solid #f1c40f; box-shadow: 0 4px 6px rgba(0,0,0,0.3);}
-        .treasure-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .treasure-item { background: linear-gradient(135deg, #1e2a38 0%, #151d26 100%); border: 1px solid #2c3e50; border-radius: 8px; padding: 10px; font-size: 11px; box-shadow: 0 4px 8px rgba(0,0,0,0.4); display:flex; flex-direction:column; justify-content:center; text-align:left;}
-        .treasure-item.locked { filter: grayscale(60%) brightness(0.6); }
-        .treasure-item.owned { border-left: 3px solid #00cec9; }
+        .treasure-header { font-size: 13px; color: #d48a42; font-weight: 900; margin-bottom: 10px; padding: 10px; background: #fff; border-radius: 10px; text-align: left; border: 1px solid #ecd3ac; border-left: 4px solid #f6b93b; box-shadow: 0 2px 6px rgba(212,138,66,0.05);}
+        .treasure-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .treasure-item { background: rgba(255,255,255,0.7); border: 1px solid #e1dcd0; border-radius: 10px; padding: 10px; font-size: 11px; box-shadow: 0 2px 6px rgba(92,83,70,0.03); display:flex; flex-direction:column; justify-content:center; text-align:left;}
+        .treasure-item.locked { filter: grayscale(50%) opacity(0.8); background: #f2efe9; }
+        .treasure-item.owned { border-left: 3px solid #f6b93b; background:#fffcf4;}
         
-        .t-act-btn { background: linear-gradient(180deg, #2980b9 0%, #17425e 100%); border: 1px solid #3498db; color: #fff; padding: 8px 0; font-size: 11px; font-weight:bold; border-radius: 6px; cursor: pointer; flex: 1; box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);}
-        .t-act-btn.t-10x { background: linear-gradient(180deg, #d35400 0%, #8e3900 100%); border: 1px solid #e67e22; }
-        .t-act-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
-        .t-act-btn:disabled { background: #2c3e50; border-color: #1a252f; color: #5a6b7c; cursor: not-allowed; box-shadow:none;}
-        .t-actions { display: flex; gap: 6px; margin-top: 8px; }
+        .quest-item { background: #fff; padding: 12px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border: 1px solid #e8e3d8; border-left: 4px solid #5a8a65; box-shadow: 0 2px 8px rgba(92,83,70,0.04); text-align: left;}
+        .btn-claim { background: #f2efe9; color: #9c9285; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 900; cursor: not-allowed; min-width:70px; text-align:center;}
+        .btn-claim.active { background: linear-gradient(180deg, #f6b93b 0%, #e58e26 100%); color: #fff; cursor: pointer; box-shadow: 0 3px 0 #cc7f22; text-shadow: 0 1px 1px rgba(0,0,0,0.2);}
+        .btn-claim.active:active { transform: translateY(3px); box-shadow: none; }
+        .btn-claim.done { background: #fff; border: 1px solid #d5ceb8; color: #789e83; box-shadow:none;}
 
-        .quest-item { background: linear-gradient(90deg, #1a252f 0%, #141c24 100%); padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border: 1px solid rgba(220, 185, 116, 0.2); border-left: 4px solid #dcb974; box-shadow: 0 4px 6px rgba(0,0,0,0.3); text-align: left;}
-        .btn-claim { background: #2c3e50; color: #5a6b7c; border: 1px solid #1a252f; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: not-allowed; min-width:70px; text-align:center;}
-        .btn-claim.active { background: linear-gradient(180deg, #f1c40f 0%, #d35400 100%); color: #4a2100; border: 1px solid #f39c12; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.4); text-shadow: 1px 1px 0 rgba(255,255,255,0.3);}
-        .btn-claim.done { background: linear-gradient(180deg, #27ae60 0%, #1e8449 100%); border: 1px solid #2ecc71; color: #fff; box-shadow:none;}
+        .rebirth-area { background: #fff; border: 2px dashed #b5c7b9; padding: 20px 15px; border-radius: 12px; margin-top: 10px; display: block; box-shadow: 0 4px 15px rgba(92,83,70,0.05);}
+        .rebirth-btn { background: linear-gradient(180deg, #f2a65a 0%, #d48a42 100%); color: #fff; font-size: 20px; font-weight: 900; padding: 12px 25px; border: 2px solid #fff; border-radius: 25px; cursor: pointer; box-shadow: 0 5px 0 #bc722f, inset 0 2px 2px rgba(255,255,255,0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.3); letter-spacing: 2px; transition: 0.1s; width: 100%;}
+        .rebirth-btn:active:not(:disabled) { transform: translateY(5px); box-shadow: 0 0 0 #bc722f; }
+        .rebirth-btn:disabled { background: #e8e3d8 !important; color: #cfc6b6 !important; cursor: not-allowed; box-shadow: 0 5px 0 #d5ceb8 !important; border-color:transparent;}
 
-        .rebirth-area { background: radial-gradient(circle, rgba(142,68,173,0.1) 0%, rgba(0,0,0,0.4) 100%), #151d26; border: 1px solid #8e44ad; padding: 25px 20px; border-radius: 12px; margin-top: 10px; display: block; box-shadow: inset 0 0 20px rgba(142,68,173,0.3), 0 5px 15px rgba(0,0,0,0.5);}
-        .rebirth-btn { background: linear-gradient(180deg, #f1c40f 0%, #d35400 100%); color: #4a2100; font-size: 22px; font-weight: 900; padding: 15px 30px; border: 2px solid #ffd700; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 15px rgba(211, 84, 0, 0.5), inset 0 2px 3px rgba(255,255,255,0.4); text-shadow: 1px 1px 0px rgba(255,255,255,0.5); letter-spacing: 2px; transition: transform 0.1s; width: 100%;}
-        .rebirth-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 2px 5px rgba(211, 84, 0, 0.5); }
-        .rebirth-btn:disabled { background: #2c3e50 !important; border: 2px solid #1a252f !important; color: #5a6b7c !important; cursor: not-allowed; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5) !important; text-shadow:none;}
-
-        .lb-title { font-size: 16px; color: #dcb974; font-weight: bold; margin-bottom: 15px; padding: 10px; background: linear-gradient(90deg, #1e2a38 0%, #151d26 100%); border-radius: 8px; text-align: left; border: 1px solid #34495e; border-left: 4px solid #f1c40f; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .lb-list { display: flex; flex-direction: column; gap: 8px; padding-bottom: 20px;}
-        .lb-item { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(90deg, #1e2a38 0%, #151d26 100%); padding: 12px 15px; border-radius: 8px; font-size: 13px; font-weight:bold; color: #dfe6e9; border: 1px solid #2c3e50; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.2);}
-        .lb-rank { width: 40px; text-align: left; font-size: 16px; }
-        .lb-name { flex: 1; text-align: left; }
-        .lb-round { color: #f1c40f; text-shadow: 0 0 3px rgba(241,196,15,0.4);}
+        .lb-title { font-size: 14px; color: #5a8a65; font-weight: 900; margin-bottom: 12px; padding: 10px; background: #fff; border-radius: 10px; text-align: left; border: 1px solid #e1dcd0; border-left: 4px solid #789e83; }
+        .lb-list { display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px;}
+        .lb-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 12px 14px; border-radius: 10px; font-size: 13px; font-weight:900; color: #7f786d; border: 1px solid #e1dcd0; transition: 0.3s; box-shadow: 0 2px 4px rgba(92,83,70,0.02);}
+        .lb-rank { width: 50px; flex-shrink: 0; text-align: left; font-size: 15px; }
+        .lb-name { flex: 1; text-align: left; color:#5c5346;}
+        .lb-round { color: #d48a42; }
         
-        .lb-item.rank-1 { background: linear-gradient(90deg, #d35400 0%, #f39c12 50%, #d35400 100%); border: 1px solid #f1c40f; color: #4a2100; transform: scale(1.02); box-shadow: 0 4px 15px rgba(241, 196, 15, 0.5); z-index: 3;}
-        .lb-item.rank-2 { background: linear-gradient(90deg, #7f8c8d 0%, #bdc3c7 50%, #7f8c8d 100%); border: 1px solid #ecf0f1; color: #2c3e50; box-shadow: 0 4px 10px rgba(189, 195, 199, 0.4); z-index: 2;}
-        .lb-item.rank-3 { background: linear-gradient(90deg, #8e44ad 0%, #9b59b6 50%, #8e44ad 100%); border: 1px solid #e056fd; color: #fff; box-shadow: 0 4px 10px rgba(142, 68, 173, 0.4); z-index: 1;}
-        .lb-item.rank-1 .lb-rank, .lb-item.rank-1 .lb-name, .lb-item.rank-1 .lb-round, 
-        .lb-item.rank-2 .lb-rank, .lb-item.rank-2 .lb-name, .lb-item.rank-2 .lb-round { color: inherit; text-shadow: none; }
-        .lb-item.rank-3 .lb-rank, .lb-item.rank-3 .lb-name, .lb-item.rank-3 .lb-round { color: #fff; text-shadow: 0 1px 2px #000; }
+        .lb-item.rank-1 { background: #fffcf4; border: 1px solid #ecd3ac; transform: scale(1.02); box-shadow: 0 4px 10px rgba(212,138,66,0.1); z-index: 3;}
+        .lb-item.rank-2 { background: #f7f5ef; border: 1px solid #d5ceb8; z-index: 2;}
+        .lb-item.rank-3 { background: #fdfaf3; border: 1px solid #e8e3d8; z-index: 1;}
+        .lb-item.is-player { border: 2px solid #5a8a65; background: #f1f6f2 !important; box-shadow: 0 0 10px rgba(90,138,101,0.2); transform: scale(1.02); z-index: 4;}
+        .lb-item.is-player .lb-rank, .lb-item.is-player .lb-name, .lb-item.is-player .lb-round { color: #5a8a65 !important; }
+
+        .auto-compact-bar { background: #fff; border: 1px solid #e1dcd0; border-radius: 10px; padding: 12px; margin-top: 15px; box-shadow: 0 2px 8px rgba(92,83,70,0.03);}
+        .auto-input { background: #f7f5ef; border: 1px solid #d5ceb8; color: #d48a42; font-weight: 900; text-align: center; width: 50px; padding: 6px; border-radius: 6px; font-size:14px; margin: 0 4px;}
+        .auto-btn { background: #fff; color: #5a8a65; border: 2px solid #789e83; padding: 6px 14px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size:13px; box-shadow: 0 3px 0 #789e83; transition:0.1s;}
+        .auto-btn:active { transform: translateY(3px); box-shadow: none; }
+        .auto-btn.active { background: #d66453; border-color: #c45749; color: #fff; box-shadow: 0 3px 0 #a94b40;}
+
+        /* 右上抛物线跳动飘伤 */
+        .floating-damage { position: absolute; color: #fff; font-weight: 900; font-size: 18px; pointer-events: none; animation: floatHitUp 0.8s forwards cubic-bezier(0.1, 0.8, 0.4, 1); font-family: 'Impact', 'Arial Black', sans-serif; -webkit-text-stroke: 1px #5c5346; text-shadow: 1px 1px 0 rgba(0,0,0,0.3); z-index: 20; letter-spacing: 0px; font-style: italic;}
+        .crit-damage { color: #f6b93b; font-size: 24px; -webkit-text-stroke: 1px #d35400; text-shadow: 0 0 8px rgba(214,100,83,0.6); z-index: 21; }
+        .deadly-damage { color: #b784a7; font-size: 32px; -webkit-text-stroke: 1.5px #6f4c65; text-shadow: 0 0 15px rgba(183,132,167,0.8), 2px 2px 0 rgba(0,0,0,0.4); z-index: 22;}
+        .auto-dmg-mark { font-size: 13px; opacity:0.9; margin-right:2px; vertical-align:middle; -webkit-text-stroke: 0;}
         
-        .lb-item.is-player { border: 2px solid #00cec9; background: linear-gradient(180deg, #132b31 0%, #0a1619 100%) !important; box-shadow: 0 0 15px rgba(0,206,201,0.5); transform: scale(1.02); z-index: 4;}
-        .lb-item.is-player .lb-rank, .lb-item.is-player .lb-name, .lb-item.is-player .lb-round { color: #00cec9 !important; font-size: 16px; font-weight: 900; text-shadow: 0 0 8px rgba(0,206,201,0.8); animation: pulsePlayerText 1.5s infinite alternate;}
-        @keyframes pulsePlayerText { from { opacity: 0.8;} to { opacity: 1; text-shadow: 0 0 15px #00cec9, 0 0 5px #fff;} }
+        @keyframes floatHitUp { 
+            0%   { opacity: 0; transform: translate(0, 10px) scale(0.5); } 
+            15%  { opacity: 1; transform: translate(15px, -20px) scale(1.1); } 
+            100% { opacity: 0; transform: translate(45px, -90px) scale(0.7); filter:blur(1px); } 
+        }
 
-        .auto-compact-bar { background: linear-gradient(135deg, #1e2a38 0%, #151d26 100%); border: 1px solid rgba(52, 152, 219, 0.5); border-radius: 10px; padding: 15px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);}
-        .auto-input { background: rgba(0,0,0,0.5); border: 1px solid #3498db; color: #f1c40f; font-weight: bold; text-align: center; width: 60px; padding: 8px; border-radius: 6px; font-size:15px; margin: 0 5px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);}
-        .auto-btn { background: linear-gradient(180deg, #2980b9 0%, #17425e 100%); color: #fff; border: 1px solid #3498db; padding: 8px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);}
-        .auto-btn.active { background: linear-gradient(180deg, #e74c3c 0%, #922b21 100%); border-color: #ff4757; }
-
-        .floating-damage { position: absolute; color: #fff; font-weight: 900; font-size: 26px; pointer-events: none; animation: floatUp 0.8s forwards ease-out; font-family: 'Impact', 'Arial Black', sans-serif; -webkit-text-stroke: 1px #000; text-shadow: 2px 2px 0 #000; z-index: 20; letter-spacing: 1px; font-style: italic;}
-        .crit-damage { color: #ff9f43; font-size: 34px; -webkit-text-stroke: 1.5px #c0392b; text-shadow: 0 0 10px #ff0000; z-index: 21; }
-        .deadly-damage { color: #e056fd; font-size: 44px; -webkit-text-stroke: 2px #8e44ad; text-shadow: 0 0 15px #8e44ad, 3px 3px 0 #000; z-index: 22;}
-        .auto-dmg-mark { font-size: 16px; opacity:0.8; margin-right:4px; vertical-align:middle; -webkit-text-stroke: 0;}
-        @keyframes floatUp { 0% { opacity: 0; transform: translateY(10px) scale(0.5); } 15% { opacity: 1; transform: translateY(-10px) scale(1.1); } 100% { opacity: 0; transform: translateY(-70px) scale(0.9); } }
-
-        #start-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.95); display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 10001; }
-        #start-overlay .modal { background: linear-gradient(180deg, #2b3a4a 0%, #1a252f 100%); border: 2px solid #dcb974; box-shadow: 0 0 40px rgba(0,0,0,0.9), inset 0 0 30px rgba(220,185,116,0.15); border-radius: 16px; padding: 35px; max-width: 400px; width: 80%;}
-        .ui-input { box-sizing:border-box; width: 100%; padding: 10px; border-radius: 6px; font-size: 16px; margin-bottom: 20px; text-align: center; font-weight: bold; background: rgba(0,0,0,0.4); border: 1px solid #dcb974; color: #dcb974; box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);}
-        .ui-input::placeholder { color: rgba(220,185,116,0.5); }
+        #start-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(237, 235, 225, 0.95); display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 10001; }
+        #start-overlay .modal { background: #fff; border: 3px solid #ebdcc2; box-shadow: 0 10px 30px rgba(92,83,70,0.1); border-radius: 16px; padding: 30px; max-width: 320px; width: 85%;}
+        .ui-input { box-sizing:border-box; width: 100%; padding: 10px; border-radius: 8px; font-size: 16px; margin-bottom: 20px; text-align: center; font-weight: 900; background: #fbfaf5; border: 2px solid #ecd3ac; color: #d48a42;}
+        .ui-input::placeholder { color: #ecd3ac; opacity: 0.8;}
     </style>
 </head>
 <body>
 
-<div id="rebirth-flash">
-    <div class="rebirth-text" id="rebirth-text">逆天改命！</div>
-</div>
+<script>
+    // ==============================================================================
+    // 🐉 万界天书 - 视觉引擎 / 资源与矩阵布阵配置中心 
+    // ==============================================================================
+    window.GameConfig = {
+        Visuals: {
+            monsterScale: 2.5,         // 怪物放大倍率
+            monsterOffsetY: 20,        // 战局整体往下偏移的像素距离(含怪物及血条等所有)
+            hpBarOffset: 0,           // 血条基于怪物的下放挂载距离
+            summonScale: 3.0,          // 召唤物放大倍率
+            // 🔥自由布阵坐标系统：填写每个索引（0开始，0为真身）相对中心位置的 x与y 偏移像素值
+            summonPositions: [
+                {x: -100, y: 30},     // 0: 真身 (左)
+                {x: 100,  y: 30},     // 1: 哪吒 (右)
+                {x: -140, y: 30},  // 2: 杨戬 (左)
+                {x: 140,  y: 30},  // 3: 孙悟空 (右)
+                {x: -180, y: 30},   // 4: 观音菩萨 (左)
+                {x: 180,  y: 30}    // 5: 如来佛祖 (右)
+            ]
+        },
+        Images: {
+            battleBg: "assets/bg.png",   
+            goldIcon: "",   
+            yaolingIcon: "",
+            monsters: [     
+                "assets/monster1.png", "assets/monster2.png", "assets/monster3.png", "assets/monster4.png", "assets/monster5.png"  
+            ] 
+        },
+        Settings: {
+            baseAttack: 1, baseCritRate: 0, baseCritDmg: 150, baseDeadlyRate: 1, baseDeadlyDmg: 10
+        },
+        Upgrades: [
+            { id: 'dmg', name: "基础攻击", icon: "🗡️", baseCost: 10,     uStep: 1,   unit: "攻", isSummon: false },
+            { id: 'cR',  name: "暴击几率", icon: "🎯", baseCost: 10,     uStep: 0.1, unit: "%",  isSummon: false },
+            { id: 'cD',  name: "暴击伤害", icon: "💥", baseCost: 10,     uStep: 1,   unit: "%",  isSummon: false },
+            { id: 'dd',  name: "致命伤害", icon: "☠️", baseCost: 100000, uStep: 1,   unit: "倍", isSummon: false }
+        ],
+        Summons: [
+            { id: 'a0', name: "真身",     icon: "🤖", img: "assets/jichu.png",  baseCost: 1000,      baseFreq: 20,  freqStep: 2,   isSummon: true },
+            { id: 'a1', name: "哪吒",     icon: "🔥", img: "assets/nezha.png",  baseCost: 10000,     baseFreq: 50,  freqStep: 10,  isSummon: true },
+            { id: 'a2', name: "杨戬",     icon: "👁️", img: "assets/yangjian.png",  baseCost: 100000,    baseFreq: 100, freqStep: 20,  isSummon: true },
+            { id: 'a3', name: "孙悟空",   icon: "🐒", img: "assets/sunwukong.png",  baseCost: 1000000,   baseFreq: 150, freqStep: 30,  isSummon: true },
+            { id: 'a4', name: "观音菩萨", icon: "🪷", img: "assets/guanyin.png",  baseCost: 10000000,  baseFreq: 250, freqStep: 50,  isSummon: true },
+            { id: 'a5', name: "如来佛祖", icon: "☸️", img: "assets/rulai.png",  baseCost: 100000000, baseFreq: 500, freqStep: 100, isSummon: true }
+        ],
+        Treasures: {
+            huntian: { name: "混天绫", unlockCost: 100,  baseCost: 10,   unlockEff: 10,  unit: "%", desc: "提升暴击几率", color: "#d66453" },
+            jingu:   { name: "金箍棒", unlockCost: 150,  baseCost: 15,   unlockEff: 2,   unit: "%", desc: "提升致命几率", color: "#d48a42" },
+            sanjian: { name: "三尖两刃", unlockCost: 200,  baseCost: 20,   unlockEff: 100, unit: "%", desc: "提升暴击伤害", color: "#5488a5" },
+            yujing:  { name: "玉净瓶", unlockCost: 300,  baseCost: 30,   unlockEff: 100, unit: "%", desc: "增加金币掉落", color: "#5a8a65" },
+            lianhua: { name: "莲花座", unlockCost: 500,  baseCost: 50,   unlockEff: 20,  unit: "倍", desc: "提升致命伤害", color: "#b784a7" },
+            kaitian: { name: "开天斧", unlockCost: 1000, baseCost: 100,  unlockEff: 100, unit: "%", desc: "提升基础攻击", color: "#c45749" },
+            qiankun: { name: "乾坤圈", unlockCost: 5000, baseCost: 500,  unlockEff: 100, unit: "%", desc: "提升自动频率", color: "#8a6d8c" },
+            yuanbao: { name: "紫金鼎", unlockCost: 8000, baseCost: 800,  unlockEff: 500, unit: "%", desc: "大幅提升魔尊金币", color: "#cc7f22" },
+            shengsi: { name: "生死簿", unlockCost: 10000,baseCost: 1000, unlockEff: 100, unit: "%", desc: "提升重生态妖灵", color: "#7f786d" }
+        },
+        Quests: [
+            { id: 0,  desc: "点击击败第1只魔怪",          type: 'stage', target: 2,   reward: 100,       rType: 'gold' },
+            { id: 1,  desc: "使用金币解锁真身",          type: 'level', targetK: 'l_a0', target: 1, reward: 1000, rType: 'gold' },
+            { id: 2,  desc: "使用金币解锁哪吒",          type: 'level', targetK: 'l_a1', target: 1, reward: 10000, rType: 'gold' },
+            { id: 3,  desc: "使用金币解锁杨戬",          type: 'level', targetK: 'l_a2', target: 1, reward: 100000, rType: 'gold' },
+            { id: 4,  desc: "击败通关第10轮魔尊",        type: 'stage', target: 101, reward: 500000,    rType: 'gold' },
+            { id: 5,  desc: "使用金币解锁孙悟空",        type: 'level', targetK: 'l_a3', target: 1, reward: 1000000, rType: 'gold' },
+            { id: 6,  desc: "完成第1次逆天改命(重生)",    type: 'rebirth',target: 1,   reward: 20,        rType: 'dsp' },
+            { id: 7,  desc: "击败通关第12轮魔尊",        type: 'stage', target: 121, reward: 5000000,   rType: 'gold' },
+            { id: 8,  desc: "使用金币解锁观音菩萨",      type: 'level', targetK: 'l_a4', target: 1, reward: 10000000, rType: 'gold' },
+            { id: 9,  desc: "击败通关第15轮魔尊",        type: 'stage', target: 151, reward: 50000000,  rType: 'gold' },
+            { id: 10, desc: "使用金币解锁如来佛祖",      type: 'level', targetK: 'l_a5', target: 1, reward: 100000000, rType: 'gold' },
+            { id: 11, desc: "击败通关第20轮魔尊",        type: 'stage', target: 201, reward: 10000,     rType: 'dsp' },
+            { id: 12, desc: "击败通关第25轮魔尊",        type: 'stage', target: 251, reward: 50000,     rType: 'dsp' },
+            { id: 13, desc: "击败通关第30轮魔尊",        type: 'stage', target: 301, reward: 100000,    rType: 'dsp' },
+            { id: 14, desc: "击败通关第40轮魔尊",        type: 'stage', target: 401, reward: 200000,    rType: 'dsp' },
+            { id: 15, desc: "击败通关第50轮魔尊",        type: 'stage', target: 501, reward: 500000,    rType: 'dsp' },
+            { id: 16, desc: "震世！斩灭第100轮魔尊",       type: 'stage', target: 1001, reward: 1000000,   rType: 'dsp' }
+        ]
+    };
+</script>
+
+<div id="rebirth-flash"><div class="rebirth-text" id="rebirth-text">逆 天 改 命</div></div>
 
 <div id="start-overlay">
+    <h1 style="color:#5a8a65; font-size: 28px; font-weight:900; margin-bottom:8px; letter-spacing: 2px;">洪荒仙录</h1>
+    <h2 style="color:#d48a42; font-size: 14px; margin-top:0; margin-bottom:25px; background:#fff; padding: 2px 10px; border-radius:10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">破境真传版</h2>
     <div class="modal">
-        <h2 style="color:#dcb974; margin-top:0; text-shadow: 0 2px 4px #000;">📖 洪荒仙录</h2>
-        <p style="font-size:14px; color:#a4b0be; margin-bottom:20px;">万法皆虚，唯道长存。</p>
-        <input type="text" id="player-name-input" class="ui-input" placeholder="输入道号" />
-        <button class="upg-item item-core" style="width:100%; text-align:center; cursor:pointer; align-items:center;" onclick="startGame()">
-            <span style="font-size:15px; font-weight:bold; color:#dcb974;">⚔️ 凝结凡躯 (开始游戏)</span>
-        </button>
-        <div style="font-size:12px; color:#556c82; margin:12px 0;">——— 或 ———</div>
-        <button class="upg-item item-auto" style="width:100%; text-align:center; cursor:pointer; align-items:center;" onclick="loadAutoSave()">
-            <span style="font-size:14px; color:#dfe6e9;">⏱️ 读取自动存档</span>
-        </button>
-        <div style="font-size:12px; color:#556c82; margin:12px 0;">——— 或 ———</div>
-        <button class="upg-item item-auto" style="width:100%; text-align:center; cursor:pointer; align-items:center;" onclick="document.getElementById('file-import-init').click()">
-            <span style="font-size:14px; color:#dfe6e9;">📂 导入本地存档</span>
-        </button>
+        <p style="font-size:13px; font-weight:bold; color:#9c9285; margin-bottom:15px;">结缘道基</p>
+        <input type="text" id="player-name-input" class="ui-input" placeholder="输入尊号..." />
+        <button class="upg-act-btn" style="width:100%; padding:12px; font-size:15px; border-radius:10px;" onclick="startGame()">⚔️ 开始游历</button>
+        <div style="font-size:12px; font-weight:bold; color:#d5ceb8; margin:15px 0;">——— 或 ———</div>
+        <button class="upg-act-btn btn-10x" style="width:100%; padding:10px; font-size:13px; border-radius:10px; background:linear-gradient(180deg,#b5c7b9,#9ab0a2); box-shadow: 0 3px 0 #789e83;" onclick="loadAutoSave()">⏱️ 读取自动存档</button>
+        <div style="font-size:12px; font-weight:bold; color:#d5ceb8; margin:15px 0;">——— 或 ———</div>
+        <button class="upg-act-btn btn-10x" style="width:100%; padding:10px; font-size:13px; border-radius:10px; background:linear-gradient(180deg,#d5ceb8,#c2bba7); box-shadow: 0 3px 0 #9c9285;" onclick="document.getElementById('file-import-init').click()">📂 读取本地存档</button>
         <input type="file" id="file-import-init" accept=".json" onchange="importSaveData(event)" style="display:none;" />
     </div>
 </div>
@@ -197,223 +269,445 @@
         <div class="header-section">
             <div class="header-name" id="display-name">【未命名】</div>
             <div style="display:flex; align-items:center;">
-                <span id="auto-save-time" style="font-size:9px; color:#7f8fa6; margin-right:4px; font-weight:bold;">未存档</span>
-                <button class="save-load-btn" onclick="exportSaveData()">💾导出</button>
-                <button class="save-load-btn" onclick="document.getElementById('file-import-ingame').click()">📂导入</button>
+                <span id="auto-save-time" style="font-size:10px; color:#b5c7b9; margin-right:4px; font-weight:bold;">未存档</span>
+                <button class="save-load-btn" onclick="exportSaveData()">💾</button>
+                <button class="save-load-btn" onclick="document.getElementById('file-import-ingame').click()">📂</button>
                 <input type="file" id="file-import-ingame" accept=".json" onchange="importSaveData(event)" style="display:none;" />
             </div>
         </div>
-        <div class="gold-display"><span class="gold-icon">金</span> <span id="gold">0</span></div>
-        
-        <!-- 极致压缩：一行4个，共2行 -->
         <div class="stats-board">
-            <div class="stats-item">攻击<span class="sv" id="stat-dmg" style="color:#ff9f43">1</span></div>
-            <div class="stats-item">自动/分<span class="sv" id="stat-auto" style="color:#2ed573">0</span></div>
-            <div class="stats-item">暴率<span class="sv" id="stat-crit-rate" style="color:#f1c40f">0%</span></div>
-            <div class="stats-item">暴伤<span class="sv" id="stat-crit-dmg" style="color:#f1c40f">150%</span></div>
-            <div class="stats-item">致命率<span class="sv" id="stat-deadly-rate" style="color:#e056fd">1%</span></div>
-            <div class="stats-item">致命倍<span class="sv" id="stat-deadly-dmg" style="color:#e056fd">10x</span></div>
-            <div class="stats-item">重生<span class="sv" id="stat-rebirths-main" style="color:#00cec9">0</span></div>
-            <div class="stats-item">界点<span class="sv" id="stat-dsp-main" style="color:#dcb974">0</span></div>
+            <div class="stats-item">攻击<span class="sv" id="stat-dmg" style="color:#d48a42">1</span></div>
+            <div class="stats-item">自动/分<span class="sv" id="stat-auto" style="color:#5a8a65">0</span></div>
+            <div class="stats-item">暴率<span class="sv" id="stat-crit-rate" style="color:#e6a143">0%</span></div>
+            <div class="stats-item">暴伤<span class="sv" id="stat-crit-dmg" style="color:#e6a143">150%</span></div>
+            <div class="stats-item">致命率<span class="sv" id="stat-deadly-rate" style="color:#9d698e">1%</span></div>
+            <div class="stats-item">致命伤<span class="sv" id="stat-deadly-dmg" style="color:#9d698e">10x</span></div>
+            <div class="stats-item">逆天数<span class="sv" id="stat-rebirths-main" style="color:#5488a5">0</span></div>
+            <div class="stats-item">妖灵<span class="sv" id="stat-dsp-main" style="color:#218c74">0</span></div>
         </div>
+    </div>
         
-        <!-- 战斗区域 -->
-        <div class="monster-area" id="monster-area">
-            <div class="stage-info">
-                <span id="stage-info-text">第 1 轮 - 极印 1</span>
-                <span class="boss-timer" id="boss-timer-wrap">(倒计: <span id="timer-text">90</span>s)</span>
-            </div>
+    <div class="monster-area" id="monster-area">
+        <div class="stage-info">
+            <span id="stage-info-text">第 1 轮 - 极印 1</span>
+            <span class="boss-timer" id="boss-timer-wrap">(<span id="timer-text">90</span>s)</span>
+        </div>
+        <div class="gold-display" id="top-gold-display"></div>
+        
+        <div class="battle-stage" id="battle-stage">
+            <div id="avatars-container"></div>
             <div class="monster-wrapper" id="monster-wrapper" onclick="attackHnd(event)">
-                <div id="ava-a0" class="avatar pos-a0">🤖</div>
-                <div id="ava-a1" class="avatar pos-a1">🔥</div>
-                <div id="ava-a2" class="avatar pos-a2">👁️</div>
-                <div id="ava-a3" class="avatar pos-a3">🐒</div>
-                <div id="ava-a4" class="avatar pos-a4">🪷</div>
-                <div id="ava-a5" class="avatar pos-a5">☸️</div>
                 <div class="monster" id="monster">👾</div>
             </div>
-            <div class="hp-bar-container">
-                <div class="hp-bar" id="hp-bar"></div>
-                <div class="hp-text"><span id="hp-current">10</span> / <span id="hp-max">10</span></div>
-            </div>
-            <button class="challenge-btn" id="btn-challenge" onclick="challengeBoss()">⚔️ 斩 尊</button>
+            
+            <div class="hp-bar-container"><div class="hp-bar" id="hp-bar"></div><div class="hp-text"><span id="hp-current">10</span> / <span id="hp-max">10</span></div></div>
         </div>
+        <button class="challenge-btn" id="btn-challenge" onclick="challengeBoss()">讨伐逆心</button>
     </div>
 
     <div class="scroll-panel">
         <div id="tab-upgrades" class="tab-content active">
-            <div class="upgrades" id="upgrades-dom">
-                <div class="upg-item item-core" id="upg-ui-dmg"><div class="title-row"><span><span class="lvl-badge" id="lvl-dmg">Lv.0</span> 🗡️ 基础段位</span></div><div class="desc-row" id="desc-dmg"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-dmg-1" onclick="buyStateUpg('dmg',1)">1级(<span class="gold-icon">金</span><span id="cost-dmg-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-dmg-10" onclick="buyStateUpg('dmg',10)">10级(<span class="gold-icon">金</span><span id="cost-dmg-10"></span>)</button></div></div>
-                <div class="upg-item item-core" id="upg-ui-cR"><div class="title-row"><span><span class="lvl-badge" id="lvl-cR">Lv.0</span> 🎯 提升暴率</span></div><div class="desc-row" id="desc-cR"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-cR-1" onclick="buyStateUpg('cR',1)">1级(<span class="gold-icon">金</span><span id="cost-cR-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-cR-10" onclick="buyStateUpg('cR',10)">10级(<span class="gold-icon">金</span><span id="cost-cR-10"></span>)</button></div></div>
-                <div class="upg-item item-core" id="upg-ui-cD"><div class="title-row"><span><span class="lvl-badge" id="lvl-cD">Lv.0</span> 💥 提高暴伤</span></div><div class="desc-row" id="desc-cD"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-cD-1" onclick="buyStateUpg('cD',1)">1级(<span class="gold-icon">金</span><span id="cost-cD-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-cD-10" onclick="buyStateUpg('cD',10)">10级(<span class="gold-icon">金</span><span id="cost-cD-10"></span>)</button></div></div>
-                <div class="upg-item item-deadly" id="upg-ui-dd"><div class="title-row"><span><span class="lvl-badge" id="lvl-dd">Lv.0</span> ☠️ 致命倍率</span></div><div class="desc-row" id="desc-dd"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-dd-1" onclick="buyStateUpg('dd',1)">1级(<span class="gold-icon">金</span><span id="cost-dd-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-dd-10" onclick="buyStateUpg('dd',10)">10级(<span class="gold-icon">金</span><span id="cost-dd-10"></span>)</button></div></div>
-                <div class="upg-item item-auto" id="upg-ui-a0"><div class="title-row"><span><span class="lvl-badge" id="lvl-a0">未开启</span> 🤖 基础挂机</span></div><div class="desc-row" id="desc-a0"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-a0-1" onclick="buyStateUpg('a0',1)">1级(<span class="gold-icon">金</span><span id="cost-a0-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-a0-10" onclick="buyStateUpg('a0',10)">10级(<span class="gold-icon">金</span><span id="cost-a0-10"></span>)</button></div></div>
-                <div class="upg-item item-nezha" id="upg-ui-a1"><div class="title-row"><span><span class="lvl-badge" id="lvl-a1">未召唤</span> 🔥 唤 哪吒</span></div><div class="desc-row" id="desc-a1"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-a1-1" onclick="buyStateUpg('a1',1)">1级(<span class="gold-icon">金</span><span id="cost-a1-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-a1-10" onclick="buyStateUpg('a1',10)">10级(<span class="gold-icon">金</span><span id="cost-a1-10"></span>)</button></div></div>
-            </div>
-            <button class="toggle-high-btn" id="toggle-high-btn" onclick="toggleHighUpgrades()">🔽 展开高阶法相 🔽</button>
-            <div class="upgrades" id="high-upgrades-dom" style="display:none; margin-top:10px;">
-                <div class="upg-item item-yangjian" id="upg-ui-a2"><div class="title-row"><span><span class="lvl-badge" id="lvl-a2">未召唤</span> 👁️ 唤 杨戬</span></div><div class="desc-row" id="desc-a2"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-a2-1" onclick="buyStateUpg('a2',1)">1级(<span class="gold-icon">金</span><span id="cost-a2-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-a2-10" onclick="buyStateUpg('a2',10)">10级(<span class="gold-icon">金</span><span id="cost-a2-10"></span>)</button></div></div>
-                <div class="upg-item item-wukong" id="upg-ui-a3"><div class="title-row"><span><span class="lvl-badge" id="lvl-a3">未召唤</span> 🐒 孙悟空</span></div><div class="desc-row" id="desc-a3"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-a3-1" onclick="buyStateUpg('a3',1)">1级(<span class="gold-icon">金</span><span id="cost-a3-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-a3-10" onclick="buyStateUpg('a3',10)">10级(<span class="gold-icon">金</span><span id="cost-a3-10"></span>)</button></div></div>
-                <div class="upg-item item-guanyin" id="upg-ui-a4"><div class="title-row"><span><span class="lvl-badge" id="lvl-a4">未召唤</span> 🪷 观音菩萨</span></div><div class="desc-row" id="desc-a4"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-a4-1" onclick="buyStateUpg('a4',1)">1级(<span class="gold-icon">金</span><span id="cost-a4-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-a4-10" onclick="buyStateUpg('a4',10)">10级(<span class="gold-icon">金</span><span id="cost-a4-10"></span>)</button></div></div>
-                <div class="upg-item item-rulai" id="upg-ui-a5"><div class="title-row"><span><span class="lvl-badge" id="lvl-a5">未召唤</span> ☸️ 如来佛祖</span></div><div class="desc-row" id="desc-a5"></div><div class="upg-actions"><button class="upg-act-btn" id="btn-a5-1" onclick="buyStateUpg('a5',1)">1级(<span class="gold-icon">金</span><span id="cost-a5-1"></span>)</button><button class="upg-act-btn btn-10x" id="btn-a5-10" onclick="buyStateUpg('a5',10)">10级(<span class="gold-icon">金</span><span id="cost-a5-10"></span>)</button></div></div>
-            </div>
+            <div class="upgrades" id="upgrades-dom"></div>
         </div>
-
         <div id="tab-treasures" class="tab-content">
-            <div class="treasure-header">💎 万界降妖法宝</div>
+            <div class="treasure-header">💎 降妖法宝图录</div>
             <div class="treasure-grid" id="treasure-grid"></div>
         </div>
         <div id="tab-quests" class="tab-content"><div id="quest-list"></div></div>
         <div id="tab-rebirth" class="tab-content">
-            <div class="rebirth-area"><p style="color:#dcb974; font-weight:bold; font-size:16px;">造化降妖点数: <br><span id="current-rebirth-points" style="font-size:38px; color:#fff; text-shadow:0 0 15px #f1c40f, 0 2px 4px #000;">0</span> 点</p><div id="rebirth-lock-text" style="color:#e74c3c; font-size:12px; margin-bottom:12px;">需斩落第10轮魔尊方可重塑！现至:第<span id="r-lock-stage">1</span>轮</div><button class="rebirth-btn" id="btn-rebirth" onclick="doRebirth(false)" disabled>🔄 逆 天 改 命</button></div>
-            <div class="auto-compact-bar"><div style="display:flex; align-items:center; flex-wrap:wrap; gap:5px; width:100%;"><span style="color:#dcb974; font-weight:bold; font-size:13px;">⚡ 击败第</span><input type="number" id="auto-stage-input" class="auto-input" min="10" value="10" /><span style="color:#dcb974; font-weight:bold; font-size:13px;">轮魔尊后自动重生</span><button class="auto-btn" id="btn-toggle-auto" onclick="toggleAutoRebirth()" style="margin-left:auto;">启用</button></div></div>
+            <div class="rebirth-area">
+                <p style="color:#d48a42; font-weight:900; font-size:14px; margin:0 0 8px 0;">造化妖灵凝淬</p>
+                <div style="font-size:36px; color:#5a8a65; font-weight:900; text-shadow:0 1px 0px rgba(255,255,255,1); margin-bottom:12px;"><span id="current-rebirth-points">0</span></div>
+                <div id="rebirth-lock-text" style="color:#d66453; font-size:11px; margin-bottom:12px; font-weight:bold;">至第10轮魔尊方可重塑！现处于:第<span id="r-lock-stage">1</span>轮</div>
+                <button class="rebirth-btn" id="btn-rebirth" onclick="doRebirth(false)" disabled>逆天改命</button>
+            </div>
+            <div class="auto-compact-bar">
+                <div style="display:flex; align-items:center; justify-content:center; gap:4px; width:100%;">
+                    <span style="color:#d48a42; font-weight:bold; font-size:12px;">打落第</span>
+                    <input type="number" id="auto-stage-input" class="auto-input" min="10" value="10" />
+                    <span style="color:#d48a42; font-weight:bold; font-size:12px;">轮后自动轮回</span>
+                    <button class="auto-btn" id="btn-toggle-auto" onclick="toggleAutoRebirth()" style="margin-left:auto;">启用</button>
+                </div>
+            </div>
         </div>
         <div id="tab-leaderboard" class="tab-content">
-            <div class="lb-title">👑 神阶战力凌霄榜 (TOP 100)</div>
+            <div class="lb-title">👑 万界天榜 (神阶制)</div>
             <div class="lb-list" id="lb-list"></div>
         </div>
     </div>
 
     <div class="tab-bar">
-        <div class="tab-item active" id="nav-upgrades" onclick="switchTab('upgrades')"><div class="tab-icon">📘</div><div>功法</div></div>
+        <div class="tab-item active" id="nav-upgrades" onclick="switchTab('upgrades')"><div class="tab-icon">📘</div><div>修真</div></div>
         <div class="tab-item" id="nav-treasures" onclick="switchTab('treasures')"><div class="tab-icon">💎</div><div>法宝</div></div>
         <div class="tab-item" id="nav-quests" onclick="switchTab('quests')"><div class="tab-icon">📜</div><div>悬赏</div></div>
-        <div class="tab-item" id="nav-rebirth" onclick="switchTab('rebirth')"><div class="tab-icon">🔄</div><div>轮回</div></div>
+        <div class="tab-item" id="nav-rebirth" onclick="switchTab('rebirth')"><div class="tab-icon">🔄</div><div>改命</div></div>
         <div class="tab-item" id="nav-leaderboard" onclick="switchTab('leaderboard')"><div class="tab-icon">🏆</div><div>天榜</div></div>
     </div>
 </div>
 
 <script>
-    let currentTabId = 'upgrades';
-    function f(num) {
-        if (!num || num === 0) return "0";
-        if (num < 0) return "-" + f(-num);
-        if (num >= 1e16) return parseFloat(num).toExponential(2);
-        if (num >= 1e12) return parseFloat((num / 1e12).toFixed(2)) + "兆";
-        if (num >= 1e8) return parseFloat((num / 1e8).toFixed(2)) + "亿";
-        if (num >= 1e4) return parseFloat((num / 10000).toFixed(2)) + "万";
-        if (Number.isInteger(num)) return num.toString();
-        return parseFloat(num.toFixed(2));
+    function getResIcon(type, size = 16) {
+        if(type === 'gold') {
+            if(GameConfig.Images.goldIcon) return `<div style="display:inline-block;width:${size}px;height:${size}px;background:url('${GameConfig.Images.goldIcon}') center/contain no-repeat;vertical-align:middle;margin:0 2px;"></div>`;
+            return `<span class="gold-icon">金</span>`;
+        } else {
+            if(GameConfig.Images.yaolingIcon) return `<div style="display:inline-block;width:${size}px;height:${size}px;background:url('${GameConfig.Images.yaolingIcon}') center/contain no-repeat;vertical-align:middle;margin:0 2px;"></div>`;
+            return `<span class="dsp-icon">灵</span>`;
+        }
     }
 
-    let state = { name:"",gold:0,maxStage:1,cStage:1,hpMax:10,hpCurrent:10,dmg:1,critR:0,critD:150,deadlyD:10,l_dmg:0,c_dmg:10,l_cR:0,c_cR:10,l_cD:0,c_cD:10,l_dd:0,c_dd:100000,l_a0:0,c_a0:1000,l_a1:0,c_a1:10000,l_a2:0,c_a2:100000,l_a3:0,c_a3:1000000,l_a4:0,c_a4:10000000,l_a5:0,c_a5:100000000,quests:Array(17).fill(0),rebirthCount:0,dsp:0,pendingDsp:0,t_huntian:0,t_jingu:0,t_sanjian:0,t_yujing:0,t_lianhua:0,t_kaitian:0,t_qiankun:0,t_yuanbao:0,t_shengsi:0,lbBots:null };
+    const GLD_UI = getResIcon('gold', 14);
+    const YL_UI = getResIcon('yaoling', 14);
 
-    let isAutoRebirth=false,needUIUpdate=false,isHighExpanded=false,isRebirthing=false;
-    let pendingShouldPlayDeath=false,sn_emoji="",sn_color="",sn_boss=false;
-    const upgradeKeys=['dmg','cR','cD','dd','a0','a1','a2','a3','a4','a5'];
-    const csMap={'dmg':'c_dmg','cR':'c_cR','cD':'c_cD','dd':'c_dd','a0':'c_a0','a1':'c_a1','a2':'c_a2','a3':'c_a3','a4':'c_a4','a5':'c_a5'};
+    function applyVisualConfig() {
+        let vc = GameConfig.Visuals || { monsterScale: 1.5, monsterOffsetY: 80, hpBarOffset: 40, summonScale: 2.0, summonPositions: [] };
+        let styleStr = `
+            :root { 
+                --m-scale: ${vc.monsterScale}; 
+                --s-scale: ${vc.summonScale}; 
+                --m-offset-y: ${vc.monsterOffsetY || 80}px; 
+            }
+            .battle-stage { transform: translateY(var(--m-offset-y)); }
+            .monster-wrapper { width: calc(85px * var(--m-scale)); height: calc(85px * var(--m-scale)); }
+            .monster-wrapper::after { width: calc(70px * var(--m-scale)); bottom: calc(-12px * var(--m-scale)); height: calc(14px * var(--m-scale));}
+            .monster { font-size: calc(50px * var(--m-scale)); border-width: calc(2px * var(--m-scale));}
+            .monster-ghost { font-size: calc(50px * var(--m-scale)); }
+            .hp-bar-container { margin-top: ${Math.max(10, 25 + vc.hpBarOffset)}px !important; }
+        `;
+        let sEl = document.getElementById('dynamic-visual-style');
+        if(!sEl) { sEl = document.createElement('style'); sEl.id = 'dynamic-visual-style'; document.head.appendChild(sEl); }
+        sEl.innerHTML = styleStr;
+    }
 
-    const questDefs=[{desc:"初入红尘·第1轮魔怪",check:()=>state.maxStage>1,rewardBase:100,type:'gold'},{desc:"降伏尝试·开启挂机",check:()=>state.l_a0>0,rewardBase:1000,type:'gold'},{desc:"结交天神·哪吒入阵",check:()=>state.l_a1>0,rewardBase:10000,type:'gold'},{desc:"天眼神兵·杨戬加持",check:()=>state.l_a2>0,rewardBase:100000,type:'gold'},{desc:"斩断尘缘·第10轮魔尊",check:()=>state.maxStage>100,rewardBase:500000,type:'gold'},{desc:"大圣归来·齐天大圣",check:()=>state.l_a3>0,rewardBase:1000000,type:'gold'},{desc:"轮回破虚·首尝涅槃",check:()=>state.rebirthCount>=1,rewardBase:20,type:'dsp'},{desc:"踏破凌霄·第12轮神劫",check:()=>state.maxStage>120,rewardBase:5000000,type:'gold'},{desc:"佛光普照·观音大士",check:()=>state.l_a4>0,rewardBase:10000000,type:'gold'},{desc:"无界降魔·第15轮魔尊",check:()=>state.maxStage>150,rewardBase:50000000,type:'gold'},{desc:"梵音天降·如来佛祖",check:()=>state.l_a5>0,rewardBase:100000000,type:'gold'},{desc:"诛仙灭魔·第20轮魔尊",check:()=>state.maxStage>200,rewardBase:10000,type:'dsp'},{desc:"仙道长河·第25轮魔尊",check:()=>state.maxStage>250,rewardBase:50000,type:'dsp'},{desc:"神威盖世·第30轮魔尊",check:()=>state.maxStage>300,rewardBase:100000,type:'dsp'},{desc:"统御乾坤·第40轮魔尊",check:()=>state.maxStage>400,rewardBase:200000,type:'dsp'},{desc:"万法归一·第50轮魔尊",check:()=>state.maxStage>500,rewardBase:500000,type:'dsp'},{desc:"大千主宰·第100轮魔尊",check:()=>state.maxStage>1000,rewardBase:1000000,type:'dsp'}];
-    const treasDefs={huntian:{name:"混天绫",unlockCost:100,baseCost:10,unlockEff:10,unit:"%",desc:"暴击几率",color:"#ff9ff3"},jingu:{name:"金箍棒",unlockCost:150,baseCost:15,unlockEff:2,unit:"%",desc:"致命几率",color:"#feca57"},sanjian:{name:"三尖两刃刀",unlockCost:200,baseCost:20,unlockEff:100,unit:"%",desc:"暴击伤害",color:"#48dbfb"},yujing:{name:"玉净瓶",unlockCost:300,baseCost:30,unlockEff:100,unit:"%",desc:"灵石敛聚",color:"#1dd1a1"},lianhua:{name:"莲花宝座",unlockCost:500,baseCost:50,unlockEff:20,unit:"倍",desc:"致命倍率",color:"#ff6b6b"},kaitian:{name:"开天巨斧",unlockCost:1000,baseCost:100,unlockEff:100,unit:"%",desc:"根基战力",color:"#ff3838"},qiankun:{name:"乾坤圈",unlockCost:5000,baseCost:500,unlockEff:100,unit:"%",desc:"自动频率",color:"#fffa65"},yuanbao:{name:"紫金葫芦",unlockCost:8000,baseCost:800,unlockEff:500,unit:"%",desc:"魔尊巨富",color:"#eccc68"},shengsi:{name:"生死簿",unlockCost:10000,baseCost:1000,unlockEff:100,unit:"%",desc:"轮回本源",color:"#a4b0be"}};
+    function buildDynamicUI() {
+        applyVisualConfig();
+        document.getElementById('top-gold-display').innerHTML = `${getResIcon('gold', 16)} <span id="gold">0</span>`;
 
-    let isBoss=false,bossExpireTime=0,lastLogicTick=Date.now(),autoAttackAccumulator=0;
-    const mythicNames=['饕餮','穷奇','梼杌','混沌','白泽','麒麟','凤凰','九尾狐','毕方','重明鸟','蠃鱼','青龙','白虎','朱雀','玄武','化蛇','九婴'];
-    const emojis=['👾','👽','🐢','🐉','🐲','🦅','🦁','🐍','🦇','🌋','👺','👹','🦖','🦑'];
-    const elMonsterArea=document.getElementById('monster-area'),elMonster=document.getElementById('monster'),elMonsterWrap=document.getElementById('monster-wrapper');
-    const hpCache={1:10};
+        let vc = GameConfig.Visuals;
+        let sScale = vc.summonScale;
+        let posArr = vc.summonPositions || [];
+        
+        let avH = '';
+        GameConfig.Summons.forEach((s, i) => {
+            let pos = posArr[i] || {x: (i%2===0?-1:1)*80*(Math.floor(i/2)+1), y: 0};
+            let imgStr = s.img ? `background-image:url('${s.img}'); background-size:contain; background-position:center; background-repeat:no-repeat; width: ${1.5 * sScale}em; height: ${1.5 * sScale}em;` : `font-size: ${24 * sScale}px;`;
+            let sText = s.img ? '' : s.icon; 
+            avH += `<div id="ava-${s.id}" class="avatar" style="left: calc(50% + ${pos.x}px); top: calc(50% + ${pos.y}px); ${imgStr}">${sText}</div>`;
+        });
+        document.getElementById('avatars-container').innerHTML = avH;
+        if(GameConfig.Images.battleBg) document.getElementById('monster-area').style.backgroundImage = `url('${GameConfig.Images.battleBg}')`;
 
-    function getStageHp(st){if(hpCache[st])return hpCache[st];for(let i=2;i<=st;i++){if(!hpCache[i])hpCache[i]=Math.ceil(hpCache[i-1]*1.1);}return hpCache[st];}
-    function Ce(v){return Math.ceil(v);}
-    function getTreasureEff(id){let lv=state['t_'+id]||0;if(lv===0)return 0;let d=treasDefs[id];return d.unlockEff+(lv-1)*(d.unlockEff*0.01);}
-    function getTreasureUpgradeCost(id,cLv,n){let d=treasDefs[id],t=0,lv=cLv;for(let i=0;i<n;i++){if(lv===0)t+=d.unlockCost;else t+=d.baseCost*Math.pow(2,Math.floor(lv/100));lv++;}return t;}
-    function getActualCR(){return parseFloat((state.critR+getTreasureEff('huntian')).toFixed(3));}
-    function getActualCD(){return parseFloat((state.critD+getTreasureEff('sanjian')).toFixed(3));}
-    function getActualDR(){return parseFloat((1+getTreasureEff('jingu')).toFixed(3));}
-    function getActualDD(){return parseFloat((state.deadlyD+getTreasureEff('lianhua')).toFixed(3));}
-    function getActualAtkMult(){return 1+getTreasureEff('kaitian')/100;}
-    function getActualCoinMult(){return 1+getTreasureEff('yujing')/100;}
+        let bCore = '';
+        const makeCard = (u) => {
+            let lvIcon = `<span class="lvl-badge" id="lvl-${u.id}">Lv.0</span>`;
+            let cardTitIcon = u.img ? '' : u.icon;
+            let watermark = (u.isSummon && u.img) ? `<div class="summon-watermark" style="background-image:url('${u.img}')"></div>` : '';
+            return `
+            <div class="upg-item" id="upg-ui-${u.id}">
+                ${watermark}
+                <div class="title-row"><span>${lvIcon} ${cardTitIcon} ${u.name}</span></div>
+                <div class="desc-row" id="desc-${u.id}"></div>
+                <div class="upg-actions">
+                    <button class="upg-act-btn" id="btn-${u.id}-1" onclick="buyStateUpg('${u.id}',1)">
+                        <span>×1</span><div style="display:flex;align-items:center;opacity:0.95;">${GLD_UI} <span id="cost-${u.id}-1" style="margin-left:2px;"></span></div>
+                    </button>
+                    ${!u.isSummon ? `
+                    <button class="upg-act-btn btn-10x" id="btn-${u.id}-10" onclick="buyStateUpg('${u.id}',10)">
+                        <span>×10</span><div style="display:flex;align-items:center;opacity:0.95;">${GLD_UI} <span id="cost-${u.id}-10" style="margin-left:2px;"></span></div>
+                    </button>` 
+                    : `
+                    <button class="upg-act-btn btn-10x" id="btn-${u.id}-10" style="display:none;" onclick="buyStateUpg('${u.id}',10)">
+                        <span>×10</span><div style="display:flex;align-items:center;opacity:0.95;">${GLD_UI} <span id="cost-${u.id}-10" style="margin-left:2px;"></span></div>
+                    </button>`}
+                </div>
+            </div>`;
+        };
+        GameConfig.Upgrades.forEach(u => bCore += makeCard(u));
+        GameConfig.Summons.forEach(s => bCore += makeCard(s));
+        document.getElementById('upgrades-dom').innerHTML = bCore;
 
-    function switchTab(tabId){document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));document.querySelectorAll('.tab-item').forEach(el=>el.classList.remove('active'));document.getElementById(`tab-${tabId}`).classList.add('active');document.getElementById(`nav-${tabId}`).classList.add('active');currentTabId=tabId;if(tabId==='leaderboard')renderLeaderboard();}
-    function toggleHighUpgrades(){isHighExpanded=!isHighExpanded;let d=document.getElementById('high-upgrades-dom'),b=document.getElementById('toggle-high-btn');if(isHighExpanded){d.style.display='grid';b.innerText='🔼 收起高阶法相 🔼';}else{d.style.display='none';b.innerText='🔽 展开高阶法相 🔽';}}
-    function generateBots(){if(state.lbBots&&state.lbBots.length>0)return;state.lbBots=[];let p1=["破天","泣血","傲世","幽冥","九转","太虚","混沌","玄冰","烈焰","狂雷","修罗","化劫","无极","青云","星辰","大荒"];let p2=["剑尊","魔尊","道祖","神主","天君","散人","真君","狂客","使者","大帝","天王","仙子","妖圣","行者","尊者","灵童"];for(let i=0;i<99;i++){state.lbBots.push({name:p1[Math.floor(Math.random()*p1.length)]+p2[Math.floor(Math.random()*p2.length)],round:Math.floor(Math.random()*(149-15+1))+15});}if(!state.lbBots.find(b=>b.round===150)){state.lbBots[0].round=150;state.lbBots[0].name="天道渊源";}}
-    function renderLeaderboard(){let pr=Math.ceil(state.maxStage/10);let all=[...state.lbBots,{name:state.name||"无名",round:pr,isPlayer:true}];all.sort((a,b)=>b.round-a.round);let h='';for(let i=0;i<Math.min(100,all.length);i++){let it=all[i],c="lb-item";if(i===0)c+=" rank-1";else if(i===1)c+=" rank-2";else if(i===2)c+=" rank-3";if(it.isPlayer)c+=" is-player";let rs=(i===0)?"🥇":(i===1)?"🥈":(i===2)?"🥉":`第${i+1}`;h+=`<div class="${c}"><div class="lb-rank">${rs}</div><div class="lb-name">${it.name}${it.isPlayer?" (你)":""}</div><div class="lb-round">通关 ${it.round} 轮</div></div>`;}document.getElementById('lb-list').innerHTML=h;}
+        let qHtml = ''; GameConfig.Quests.forEach((q) => {
+            let rText = q.rType === 'dsp' ? YL_UI : GLD_UI;
+            qHtml += `<div class="quest-item"><span style="font-size:12px;font-weight:900;color:#5c5346;">[历练-${q.id+1}] ${q.desc}<br><small style="color:#789e83;">(赏: ${rText} <span style="color:#d48a42;font-weight:900;">${f(q.reward)}</span>)</small></span><button id="btn-quest-${q.id}" class="btn-claim" disabled>潜修中</button></div>`;
+        }); document.getElementById('quest-list').innerHTML = qHtml;
 
-    function startGame(){state.name=document.getElementById('player-name-input').value.trim()||"无名散仙";finalizeLoad();}
-    function exportSaveData(){let ds="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(state));let dl=document.createElement('a');dl.setAttribute("href",ds);dl.setAttribute("download",`${state.name}_存档.json`);document.body.appendChild(dl);dl.click();dl.remove();}
-    function importSaveData(event){let f_=event.target.files[0];if(!f_)return;let r=new FileReader();r.onload=e=>{try{let d=JSON.parse(e.target.result);Object.assign(state,d);while(state.quests.length<questDefs.length)state.quests.push(0);finalizeLoad();}catch(err){alert("存档损坏！");}};r.readAsText(f_);event.target.value='';}
-    function loadAutoSave(){let s=localStorage.getItem('lz_auto_save');if(s){try{Object.assign(state,JSON.parse(s));while(state.quests.length<questDefs.length)state.quests.push(0);finalizeLoad();}catch(e){alert("自动存档损坏");}}else alert("未找到自动存档");}
-    setInterval(()=>{if(state.name!==""){localStorage.setItem('lz_auto_save',JSON.stringify(state));let d=new Date();document.getElementById('auto-save-time').innerText="已存 "+d.getHours().toString().padStart(2,'0')+":"+d.getMinutes().toString().padStart(2,'0');}},60000);
-    function finalizeLoad(){if(state.t_qiankun===undefined)state.t_qiankun=0;if(state.t_yuanbao===undefined)state.t_yuanbao=0;if(state.t_shengsi===undefined)state.t_shengsi=0;document.getElementById('start-overlay').style.display='none';document.getElementById('display-name').innerText=`【${state.name}】`;if(state.pendingDsp===undefined)state.pendingDsp=0;generateBots();initQuestDOM();initTreasuresDOM();spawnMonster(state.cStage,true);lastLogicTick=Date.now();updateUI();fastSyncMonsterUI();uiSyncAutoMode();}
+        GameConfig.Upgrades.forEach(u => { csMap[u.id] = 'c_'+u.id; });
+        GameConfig.Summons.forEach(s => { csMap[s.id] = 'c_'+s.id; });
+    }
 
-    function toggleAutoRebirth(){isAutoRebirth=!isAutoRebirth;let btn=document.getElementById('btn-toggle-auto'),inpt=document.getElementById('auto-stage-input');if(isAutoRebirth){let t=parseInt(inpt.value);if(isNaN(t)||t<10){alert("轮次必须>=10");isAutoRebirth=false;return;}btn.innerText="🛑 停止";btn.classList.add('active');inpt.disabled=true;processAutoUpgrade();}else{btn.innerText="启用";btn.classList.remove('active');inpt.disabled=false;}uiSyncAutoMode();}
-    function uiSyncAutoMode(){document.querySelectorAll('.upg-item').forEach(el=>{if(el.parentElement.classList.contains('upgrades')){if(isAutoRebirth)el.classList.add('disabled-in-auto');else el.classList.remove('disabled-in-auto');}});updateUI();}
-    function processAutoUpgrade(){if(!isAutoRebirth||isRebirthing)return;let b=true,lim=10000;while(b&&lim>0){b=false;lim--;for(let k of upgradeKeys){let ck=csMap[k];if(state.gold>=state[ck]){state.gold-=state[ck];if(k==='dmg'){state.dmg+=Math.pow(2,Math.floor(state.l_dmg/20));state.l_dmg++;state[ck]=Ce(state[ck]*1.1);}if(k==='cR'){state.critR+=0.1;state.l_cR++;state[ck]=Ce(state[ck]*1.1);}if(k==='cD'){state.critD+=1;state.l_cD++;state[ck]=Ce(state[ck]*1.1);}if(k==='dd'){state.deadlyD+=1;state.l_dd++;state[ck]*=2;}if(k.startsWith('a')){state['l_'+k]++;state[ck]=Ce(state[ck]*1.1);}b=true;}};}needUIUpdate=true;}
-    function getUpgradeCost(k,n){let c=state[csMap[k]],s=0;for(let i=0;i<n;i++){s+=c;c=(k==='dd')?c*2:Ce(c*1.1);}return s;}
-    function buyStateUpg(k,n){let cost=getUpgradeCost(k,n),ck=csMap[k];if(state.gold>=cost){state.gold-=cost;for(let i=0;i<n;i++){if(k==='dmg'){state.dmg+=Math.pow(2,Math.floor(state.l_dmg/20));state.l_dmg++;state[ck]=Ce(state[ck]*1.1);}if(k==='cR'){state.critR+=0.1;state.l_cR++;state[ck]=Ce(state[ck]*1.1);}if(k==='cD'){state.critD+=1;state.l_cD++;state[ck]=Ce(state[ck]*1.1);}if(k==='dd'){state.deadlyD+=1;state.l_dd++;state[ck]*=2;}if(k.startsWith('a')){state['l_'+k]++;state[ck]=Ce(state[ck]*1.1);}}updateUI();}}
+    let currentTabId = 'upgrades';
+    function f(n){if(!n||n===0)return"0";if(n<0)return"-"+f(-n);if(n>=1e16)return parseFloat(n).toExponential(2);if(n>=1e12)return parseFloat((n/1e12).toFixed(2))+"兆";if(n>=1e8)return parseFloat((n/1e8).toFixed(2))+"亿";if(n>=1e4)return parseFloat((n/10000).toFixed(2))+"万";if(Number.isInteger(n))return n.toString();return parseFloat(n.toFixed(2));}
 
-    function initQuestDOM(){let h='';questDefs.forEach((q,i)=>{let rt=q.type==='dsp'?`${f(q.rewardBase)}界点`:`${f(q.rewardBase)}灵石`;h+=`<div class="quest-item"><span style="font-size:12px;font-weight:bold;color:#dfe6e9;">[仙录-${i+1}] ${q.desc}<br><small style="color:#7f8fa6;">(赏: <span style="color:#dcb974;">${rt}</span>)</small></span><button id="btn-quest-${i}" class="btn-claim" disabled>未达标</button></div>`;});document.getElementById('quest-list').innerHTML=h;}
-    function processQuests(){questDefs.forEach((q,i)=>{if(state.quests[i]===0&&q.check())state.quests[i]=1;let btn=document.getElementById(`btn-quest-${i}`);if(!btn)return;if(state.quests[i]===0){btn.className="btn-claim";btn.disabled=true;btn.innerText="未达标";btn.onclick=null;}else if(state.quests[i]===1){btn.className="btn-claim active";btn.disabled=false;btn.innerText="🎁领取";btn.onclick=()=>claimQuest(i);}else{btn.className="btn-claim done";btn.disabled=true;btn.innerText="✅已领";btn.onclick=null;}});}
-    function claimQuest(i){if(state.quests[i]===1){let q=questDefs[i];if(q.type==='gold')state.gold+=q.rewardBase;if(q.type==='dsp')state.dsp+=q.rewardBase;state.quests[i]=2;needUIUpdate=true;if(isAutoRebirth)processAutoUpgrade();}}
+    let state = { name: "", gold: 0, maxStage: 1, cStage: 1, hpMax: 10, hpCurrent: 10, dmg: GameConfig.Settings.baseAttack, critR: GameConfig.Settings.baseCritRate, critD: GameConfig.Settings.baseCritDmg, deadlyD: GameConfig.Settings.baseDeadlyDmg, quests: Array(GameConfig.Quests.length).fill(0), rebirthCount: 0, dsp: 0, pendingDsp: 0, t_huntian:0, t_jingu:0, t_sanjian:0, t_yujing:0, t_lianhua:0, t_kaitian:0, t_qiankun:0, t_yuanbao:0, t_shengsi:0, lbBots: null };
+    let csMap = {};
 
-    function initTreasuresDOM(){let h='';Object.keys(treasDefs).forEach(id=>{let d=treasDefs[id];h+=`<div class="treasure-item locked" id="tb-${id}"><strong style="color:${d.color};font-size:13px;margin-bottom:4px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:2px;">${d.name} <span id="tb-lv-${id}" style="font-size:11px;color:#dcb974;"></span></strong><span style="color:#a4b0be;font-size:11px;line-height:1.4;margin-bottom:2px;">${d.desc} <strong id="tb-eff-${id}" style="color:#00cec9;">+0</strong><br><span id="tb-next-${id}" style="font-size:10px;color:#7f8fa6;"></span></span><div class="t-actions"><button class="t-act-btn" id="btn-t1-${id}" onclick="buyTreasure('${id}',1)"></button><button class="t-act-btn t-10x" id="btn-t10-${id}" style="display:none;" onclick="buyTreasure('${id}',10)"></button></div></div>`;});document.getElementById('treasure-grid').innerHTML=h;}
-    function updateTreasuresUI(){Object.keys(treasDefs).forEach(id=>{let d=treasDefs[id],lv=state['t_'+id]||0,c1=getTreasureUpgradeCost(id,lv,1),c10=getTreasureUpgradeCost(id,lv,10);let el=document.getElementById(`tb-${id}`);if(!el)return;el.className=`treasure-item ${lv>0?'owned':'locked'}`;document.getElementById(`tb-lv-${id}`).innerText=lv===0?"":`(Lv.${lv})`;document.getElementById(`tb-eff-${id}`).innerText=`+${parseFloat(getTreasureEff(id).toFixed(2))}${d.unit}`;let ne=lv===0?d.unlockEff:(d.unlockEff+lv*(d.unlockEff*0.01));document.getElementById(`tb-next-${id}`).innerText=`(下级: +${parseFloat(ne.toFixed(2))}${d.unit})`;let b1=document.getElementById(`btn-t1-${id}`),b10=document.getElementById(`btn-t10-${id}`);b1.disabled=(state.dsp<c1);b10.disabled=(state.dsp<c10);if(lv===0){b1.style.display='block';b10.style.display='none';b1.innerText=`点亮 (${f(c1)}点)`;}else{b1.style.display='inline-block';b10.style.display='inline-block';b1.innerText=`升级(${f(c1)})`;b10.innerText=`十连(${f(c10)})`;}});}
-    function buyTreasure(id,n){let lv=state['t_'+id]||0,c=getTreasureUpgradeCost(id,lv,n);if(state.dsp>=c){state.dsp-=c;state['t_'+id]=lv+n;updateUI();}}
+    let isAutoRebirth = false, needUIUpdate = false, isRebirthing = false;
+    let pendingShouldPlayDeath = false, sn_emoji = "", sn_color = "", sn_img = "", sn_boss = false;
+    let isBoss = false, bossExpireTime = 0, lastLogicTick = Date.now(), autoAttackAccumulator = 0;
+    const mythicNames = ['饕餮','穷奇','梼杌','混沌','白泽','麒麟','凤凰','九尾狐','毕方','重明鸟','蠃鱼','青龙','白虎','朱雀','玄武','化蛇','九婴'];
+    const emojis = ['👾','👽','🐢','🐉','🐲','🦅','🦁','🐍','🦇','🌋','👺','👹','🦖','🦑'];
+    const hpCache = {1:10};
 
-    function playRebirthAnimation(){return new Promise(resolve=>{let fl=document.getElementById('rebirth-flash'),tx=document.getElementById('rebirth-text'),vp=document.getElementById('viewport-main');fl.style.display='flex';void fl.offsetWidth;fl.style.opacity='1';tx.style.opacity='1';tx.style.transform='scale(1)';setTimeout(()=>{vp.style.opacity='0';resolve();setTimeout(()=>{fl.style.opacity='0';tx.style.opacity='0';tx.style.transform='scale(0.2)';vp.style.opacity='1';setTimeout(()=>{fl.style.display='none';},800);},1000);},600);});}
-    async function doRebirth(skip=false){if(isRebirthing)return;let g=Ce(state.pendingDsp||0);if(!skip){if(!confirm(`【轮回·重塑天道】\n一切苦修化为虚无！\n提炼：${f(g)} 降妖点数。\n确认踏入轮回？`))return;}isRebirthing=true;await playRebirthAnimation();state.dsp+=g;state.pendingDsp=0;state.rebirthCount++;state.cStage=1;state.maxStage=1;state.dmg=1;state.critR=0;state.critD=150;state.deadlyD=10;state.l_dmg=0;state.c_dmg=10;state.l_cR=0;state.c_cR=10;state.l_cD=0;state.c_cD=10;state.l_dd=0;state.c_dd=100000;state.l_a0=0;state.c_a0=1000;state.l_a1=0;state.c_a1=10000;state.l_a2=0;state.c_a2=100000;state.l_a3=0;state.c_a3=1000000;state.l_a4=0;state.c_a4=10000000;state.l_a5=0;state.c_a5=100000000;state.gold=Ce(1000000*getActualCoinMult());spawnMonster(state.cStage,true);isRebirthing=false;if(isAutoRebirth)processAutoUpgrade();updateUI();}
+    function getStageHp(st) { if(hpCache[st])return hpCache[st]; for(let i=2; i<=st; i++){ if(!hpCache[i]) hpCache[i] = Math.ceil(hpCache[i-1]*1.1); } return hpCache[st]; }
+    function Ce(v) { return Math.ceil(v); }
+    
+    function getTreasureEff(id) { let lv=state['t_'+id]||0; if(lv===0)return 0; return GameConfig.Treasures[id].unlockEff + (lv-1)*(GameConfig.Treasures[id].unlockEff*0.01); }
+    function getTreasureUpgCost(id, cLv, n) { let d=GameConfig.Treasures[id], t=0, lv=cLv; for(let i=0;i<n;i++){ t += lv===0 ? d.unlockCost : d.baseCost*Math.pow(2, Math.floor(lv/100)); lv++; } return t; }
+    
+    function getActualCR() { return parseFloat((state.critR+getTreasureEff('huntian')).toFixed(3)); }
+    function getActualCD() { return parseFloat((state.critD+getTreasureEff('sanjian')).toFixed(3)); }
+    function getActualDR() { return parseFloat((GameConfig.Settings.baseDeadlyRate + getTreasureEff('jingu')).toFixed(3)); }
+    function getActualDD() { return parseFloat((state.deadlyD+getTreasureEff('lianhua')).toFixed(3)); }
+    function getActualAtkMult() { return 1+getTreasureEff('kaitian')/100; }
+    function getActualCoinMult() { return 1+getTreasureEff('yujing')/100; }
 
-    function recordSnapshotData(){sn_emoji=elMonster.innerText;sn_color=elMonster.style.backgroundColor||elMonster.style.background;sn_boss=elMonster.classList.contains('boss');}
-    function triggerHitAnim(){elMonster.classList.remove('hit');void elMonster.offsetWidth;elMonster.classList.add('hit');}
-    function executeDeathAndSpawnVisuals(){if(document.visibilityState!=='visible'||isRebirthing)return;let g=document.createElement('div');g.className='monster-ghost';if(sn_boss)g.classList.add('boss');g.style.backgroundColor=sn_color;g.innerText=sn_emoji;elMonsterWrap.prepend(g);setTimeout(()=>{if(g)g.remove();},350);elMonster.classList.remove('spawn');void elMonster.offsetWidth;elMonster.classList.add('spawn');setTimeout(()=>{let dl=document.createElement('div');dl.className='dust-l';let dr=document.createElement('div');dr.className='dust-r';elMonsterWrap.appendChild(dl);elMonsterWrap.appendChild(dr);setTimeout(()=>{if(dl)dl.remove();if(dr)dr.remove();},400);},180);setTimeout(()=>{elMonster.classList.remove('spawn');},450);}
+    function switchTab(tb) { document.querySelectorAll('.tab-content,.tab-item').forEach(e=>e.classList.remove('active')); document.getElementById(`tab-${tb}`).classList.add('active'); document.getElementById(`nav-${tb}`).classList.add('active'); currentTabId=tb; if(tb==='leaderboard')renderLeaderboard(); }
+    
+    function generateBots() { if(state.lbBots)return; state.lbBots=[]; let p1=["墨渊","云虚","化梦","逍遥","无极","青云","玄霜","炽阳","太微","混沌"]; let p2=["剑王","星主","道君","妖皇","散仙","行者","尊者","圣童"]; for(let i=0;i<99;i++) state.lbBots.push({name: p1[i%p1.length]+p2[i%p2.length], round: Math.floor(Math.random()*135)+15}); state.lbBots[0]={name:"天道鸿钧", round:150}; }
+    function renderLeaderboard() {
+        let all = [...state.lbBots, {name: state.name||"道祖", round: Math.ceil(state.maxStage/10), isP: true}].sort((a,b)=>b.round-a.round);
+        document.getElementById('lb-list').innerHTML = all.slice(0,100).map((it, i) => `<div class="lb-item ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''} ${it.isP?'is-player':''}"><div class="lb-rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':`No.${i+1}`}</div><div class="lb-name">${it.name}${it.isP?" (你)":""}</div><div class="lb-round">击败 ${it.round} 轮魔尊</div></div>`).join('');
+    }
 
-    function getTotalAutoRate(){let t=0;if(state.l_a0>0)t+=120+(state.l_a0-1)*2;if(state.l_a1>0)t+=50+(state.l_a1-1)*10;if(state.l_a2>0)t+=100+(state.l_a2-1)*20;if(state.l_a3>0)t+=150+(state.l_a3-1)*30;if(state.l_a4>0)t+=250+(state.l_a4-1)*50;if(state.l_a5>0)t+=500+(state.l_a5-1)*100;return Ce(t*(1+getTreasureEff('qiankun')/100));}
+    function startGame() { state.name = document.getElementById('player-name-input').value.trim() || "无名道祖"; finalizeLoad(); }
+    function exportSaveData() { let dl = document.createElement('a'); dl.setAttribute("href", "data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(state))); dl.setAttribute("download", `${state.name}_破阵残卷.json`); document.body.appendChild(dl); dl.click(); dl.remove(); }
+    function importSaveData(evt) { let f_ = event.target.files[0]; if(!f_)return; let r = new FileReader(); r.onload = e => { try { Object.assign(state, JSON.parse(e.target.result)); while(state.quests.length<GameConfig.Quests.length) state.quests.push(0); finalizeLoad(); }catch(ex){alert("道印损毁！");}}; r.readAsText(f_); }
+    function loadAutoSave() { let s = localStorage.getItem('shuxian_pj_save'); if(s) { Object.assign(state, JSON.parse(s)); while(state.quests.length<GameConfig.Quests.length) state.quests.push(0); finalizeLoad(); } else alert("未窥见任何道心残留。"); }
+    setInterval(() => { if(state.name){ localStorage.setItem('shuxian_pj_save', JSON.stringify(state)); let d=new Date(); document.getElementById('auto-save-time').innerText="自动存档 "+d.getHours().toString().padStart(2,'0')+":"+d.getMinutes().toString().padStart(2,'0'); } }, 60000);
 
-    setInterval(()=>{let now=Date.now(),delta=now-lastLogicTick;lastLogicTick=now;if(isRebirthing)return;
-    if(isBoss&&bossExpireTime>0){let ls=Math.ceil((bossExpireTime-now)/1000);if(ls<=0){bossExpireTime=0;state.cStage--;spawnMonster(state.cStage,true);}else document.getElementById('timer-text').innerText=ls;}
-    let tr=getTotalAutoRate();
-    if(tr>=1800){let ea=(tr/60000)*delta,aCR=getActualCR(),aCD=getActualCD(),aDR=getActualDR(),aDD=getActualDD(),bd=Ce(state.dmg*getActualAtkMult()),avg=Ce(bd*(1-(aCR/100)+(aCR/100)*(aCD/100))*(1-(aDR/100)+(aDR/100)*aDD)),dp=Ce(ea*avg);if(dp>99999999)dp=Math.floor(dp/10000)*10000;let ka=false,sd=dp,sl=999999,sf=false;
-    while(dp>0&&sl>0&&state.hpCurrent>0){if(dp>=state.hpCurrent){dp-=state.hpCurrent;state.hpCurrent=0;ka=true;let cm=getActualCoinMult(),rnd=Math.ceil(state.cStage/10),dm=rnd<5?1:(Math.floor(rnd/5)+1);state.pendingDsp+=Ce((isBoss?3:1)*dm*(1+getTreasureEff('shengsi')/100));if(isBoss){state.gold+=Ce((state.hpMax*3)*cm*(1+getTreasureEff('yuanbao')/100));bossExpireTime=0;if(isAutoRebirth&&rnd===parseInt(document.getElementById('auto-stage-input').value)){sf=true;break;}}else state.gold+=Ce(state.hpMax*cm);if(!pendingShouldPlayDeath&&document.visibilityState==='visible'){recordSnapshotData();pendingShouldPlayDeath=true;}if(state.cStage===state.maxStage)state.maxStage++;state.cStage++;isBoss=(((state.cStage-1)%10+1)===10);state.hpMax=getStageHp(state.cStage);state.hpCurrent=state.hpMax;}else{state.hpCurrent-=dp;dp=0;}sl--;}
-    if(sd>0||ka)needUIUpdate=true;if(sd>0&&document.visibilityState==='visible'){triggerHitAnim();const rt=elMonster.getBoundingClientRect();buildFloatDmg(rt.left+rt.width/2,rt.top+rt.height/2+(Math.random()-0.5)*50,sd,'deadly',true);}if(sf)doRebirth(true);else if(ka&&isAutoRebirth)processAutoUpgrade();
-    }else if(tr>0){autoAttackAccumulator+=(tr/60000)*delta;if(autoAttackAccumulator>=1){let c=Math.floor(autoAttackAccumulator);autoAttackAccumulator-=c;batchSimulateAttacks(c);}}
-    if(needUIUpdate){updateUI();fastSyncMonsterUI();if(currentTabId==='leaderboard')renderLeaderboard();needUIUpdate=false;}
-    if(pendingShouldPlayDeath){executeDeathAndSpawnVisuals();pendingShouldPlayDeath=false;}
-    },100);
+    function finalizeLoad() {
+        GameConfig.Upgrades.forEach(u => { let ck = 'c_'+u.id; if(state['l_'+u.id] == null) state['l_'+u.id]=0; if(state[ck] == null || isNaN(state[ck])) state[ck] = u.baseCost; });
+        GameConfig.Summons.forEach(s => { let ck = 'c_'+s.id; if(state['l_'+s.id] == null) state['l_'+s.id]=0; if(state[ck] == null || isNaN(state[ck])) state[ck] = s.baseCost; });
+        
+        buildDynamicUI(); generateBots(); initTreasuresDOM(); spawnMonster(state.cStage, true);
+        document.getElementById('start-overlay').style.display='none';
+        
+        document.getElementById('display-name').innerText = `${state.name}的洪荒历`;
+        lastLogicTick = Date.now(); updateUI(); fastSyncMonsterUI(); uiSyncAutoMode();
+    }
 
-    function buildFloatDmg(x,y,dmg,type,isAuto){const d=document.createElement('div');d.classList.add('floating-damage');const mk=isAuto?`<span class="auto-dmg-mark">🤖</span>`:``;if(type==='deadly'){d.classList.add('deadly-damage');d.innerHTML=`${mk}必杀 -${f(Ce(dmg))}`;}else if(type==='crit'){d.classList.add('crit-damage');d.innerHTML=`${mk}暴击 -${f(Ce(dmg))}`;}else{d.innerHTML=`${mk}-${f(Ce(dmg))}`;}let rx=(Math.random()-0.5)*80,rect=elMonster.getBoundingClientRect();d.style.left=(x-rect.left+rx)+'px';d.style.top=(y-rect.top-20)+'px';elMonsterArea.appendChild(d);setTimeout(()=>d.remove(),800);}
+    function toggleAutoRebirth() { 
+        let inp = document.getElementById('auto-stage-input');
+        if(!isAutoRebirth && parseInt(inp.value)<10) { alert("至少打落10轮方可立劫"); return; }
+        isAutoRebirth = !isAutoRebirth; inp.disabled = isAutoRebirth;
+        document.getElementById('btn-toggle-auto').className = `auto-btn ${isAutoRebirth?'active':''}`;
+        document.getElementById('btn-toggle-auto').innerText = isAutoRebirth?"🛑 挂机中":"启用";
+        if(isAutoRebirth) processAutoUpg(); uiSyncAutoMode();
+    }
+    
+    function uiSyncAutoMode() { document.querySelectorAll('.upg-item').forEach(el=> el.parentElement.id.includes('upgrades') ? el.classList.toggle('disabled-in-auto', isAutoRebirth) : null); updateUI(); }
 
-    function batchSimulateAttacks(count){let aCR=getActualCR(),aCD=getActualCD(),aDR=getActualDR(),aDD=getActualDD(),bd=Ce(state.dmg*getActualAtkMult()),aL=count,lc=999999,bt=0,anyC=false,anyD=false;
-    while(aL>0&&lc>0&&state.hpCurrent>0){if(aL<50){let isC=(Math.random()*100)<aCR,isD=(Math.random()*100)<aDR,fd=bd;if(isC){fd=Ce(fd*(aCD/100));anyC=true;}if(isD){fd=Ce(fd*aDD);anyD=true;}if(fd>99999999)fd=Math.floor(fd/10000)*10000;state.hpCurrent-=fd;bt+=fd;aL--;if(state.hpCurrent<=0)fastDefeatHandlingForNormal();}else{let ev=Ce(bd*(1-(aCR/100)+(aCR/100)*(aCD/100))*(1-(aDR/100)+(aDR/100)*aDD));if(ev>99999999)ev=Math.floor(ev/10000)*10000;let hk=Math.ceil(state.hpCurrent/Math.max(1,ev));if(hk<=aL){bt+=state.hpCurrent;aL-=hk;state.hpCurrent=0;anyC=true;fastDefeatHandlingForNormal();}else{state.hpCurrent-=(ev*aL);bt+=(ev*aL);anyC=true;aL=0;}}lc--;}
-    if(bt>0&&document.visibilityState==='visible'){triggerHitAnim();const rt=elMonsterArea.getBoundingClientRect();buildFloatDmg(rt.left+rt.width/2,rt.top+rt.height/2+(Math.random()-0.5)*50,bt,anyD?'deadly':(anyC?'crit':'normal'),true);}needUIUpdate=true;}
+    function applyUpgradeMath(id, step) {
+        if(id==='dmg'){ state.dmg += Math.pow(2, Math.floor(state['l_'+id]/20)); }
+        else if(id==='cR'){ state.critR += step; } else if(id==='cD'){ state.critD += step; } else if(id==='dd'){ state.deadlyD += step; }
+        state['l_'+id]++;
+    }
 
-    function fastDefeatHandlingForNormal(){let rnd=Math.ceil(state.cStage/10);state.pendingDsp+=Ce((isBoss?3:1)*(rnd<5?1:Math.floor(rnd/5)+1)*(1+getTreasureEff('shengsi')/100));if(!pendingShouldPlayDeath&&document.visibilityState==='visible'){recordSnapshotData();pendingShouldPlayDeath=true;}let cm=getActualCoinMult();if(isBoss){state.gold+=Ce((state.hpMax*3)*cm*(1+getTreasureEff('yuanbao')/100));bossExpireTime=0;}else state.gold+=Ce(state.hpMax*cm);if(state.cStage===state.maxStage)state.maxStage++;state.cStage++;if(isAutoRebirth){processAutoUpgrade();if(isBoss&&rnd===parseInt(document.getElementById('auto-stage-input').value)){doRebirth(true);return;}}isBoss=(((state.cStage-1)%10+1)===10);state.hpMax=getStageHp(state.cStage);state.hpCurrent=state.hpMax;}
+    function processAutoUpg() {
+        if(!isAutoRebirth || isRebirthing) return;
+        let bought=true, breaker=10000; let cKeys = [...GameConfig.Upgrades, ...GameConfig.Summons];
+        while(bought && breaker-->0) { bought = false; cKeys.forEach(cfg => { let c = state[csMap[cfg.id]]; if(state.gold >= c) { state.gold -= c; if(GameConfig.Summons.some(s=>s.id===cfg.id)) state['l_'+cfg.id]++; else applyUpgradeMath(cfg.id, cfg.uStep); state[csMap[cfg.id]] = (cfg.id==='dd') ? c*2 : Ce(c*1.1); bought=true; } });
+        } needUIUpdate=true;
+    }
 
-    function attackHnd(event){if(state.hpCurrent<=0||isRebirthing)return;triggerHitAnim();let isC=(Math.random()*100)<getActualCR(),isD=(Math.random()*100)<getActualDR(),fd=Ce(state.dmg*getActualAtkMult());if(isC)fd=Ce(fd*(getActualCD()/100));if(isD)fd=Ce(fd*getActualDD());if(fd>99999999)fd=Math.floor(fd/10000)*10000;state.hpCurrent-=fd;let t='normal';if(isD)t='deadly';else if(isC)t='crit';buildFloatDmg(event.clientX,event.clientY,fd,t,false);if(state.hpCurrent<=0)fastDefeatHandlingForNormal();updateUI();fastSyncMonsterUI();needUIUpdate=false;if(pendingShouldPlayDeath){executeDeathAndSpawnVisuals();pendingShouldPlayDeath=false;}}
+    function getUpgCostRange(id, n) { let c=state[csMap[id]], sum=0; for(let i=0;i<n;i++) { sum+=c; c = id==='dd'?c*2:Ce(c*1.1); } return sum; }
+    
+    function buyStateUpg(id, n) {
+        let cost = getUpgCostRange(id, n);
+        if(state.gold >= cost) { state.gold -= cost; let isS = GameConfig.Summons.some(s=>s.id===id); let uCfg = isS ? null : GameConfig.Upgrades.find(u=>u.id===id);
+            for(let i=0;i<n;i++) { if(isS) state['l_'+id]++; else applyUpgradeMath(id, uCfg.uStep); state[csMap[id]] = (id==='dd') ? state[csMap[id]]*2 : Ce(state[csMap[id]]*1.1); } updateUI();
+        }
+    }
 
-    function getAttackerUnlockDesc(id){let t={'a0':"120次/分",'a1':"50次/分",'a2':"100次/分",'a3':"150次/分",'a4':"250次/分",'a5':"500次/分"};return `解锁后频率 +${t[id]}`;}
+    function processQuests() {
+        GameConfig.Quests.forEach(q => {
+            let passed = false; if(q.type==='stage') passed = state.maxStage >= q.target; else if(q.type==='level') passed = state[q.targetK] >= q.target; else if(q.type==='rebirth') passed = state.rebirthCount >= q.target;
+            if (state.quests[q.id] === 0 && passed) state.quests[q.id] = 1; let b = document.getElementById(`btn-quest-${q.id}`); if(!b) return;
+            if(state.quests[q.id]===0) { b.className="btn-claim"; b.disabled=true; b.innerText="历炼中"; b.onclick=null;}
+            else if(state.quests[q.id]===1) { b.className="btn-claim active"; b.disabled=false; b.innerText="🎁领取"; b.onclick=()=>claimQuest(q.id); }
+            else { b.className="btn-claim done"; b.disabled=true; b.innerText="✅破境"; b.onclick=null; }
+        });
+    }
+    
+    function claimQuest(id) { let q = GameConfig.Quests.find(x=>x.id===id); if(state.quests[id] === 1) { if(q.rType==='gold') state.gold += q.reward; if(q.rType==='dsp') state.dsp += q.reward; state.quests[id]=2; needUIUpdate=true; if(isAutoRebirth) processAutoUpg(); } }
 
-    function updateUI(){processQuests();updateTreasuresUI();
-    document.getElementById('gold').innerText=f(state.gold);
-    document.getElementById('stat-dmg').innerText=f(Ce(state.dmg*getActualAtkMult()));
-    document.getElementById('stat-auto').innerText=f(Ce(getTotalAutoRate()));
-    document.getElementById('stat-crit-rate').innerText=getActualCR().toFixed(1)+"%";
-    document.getElementById('stat-crit-dmg').innerText=f(getActualCD())+"%";
-    document.getElementById('stat-deadly-rate').innerText=getActualDR().toFixed(1)+"%";
-    document.getElementById('stat-deadly-dmg').innerText=f(getActualDD())+"x";
-    document.getElementById('stat-rebirths-main').innerText=state.rebirthCount;
-    document.getElementById('stat-dsp-main').innerText=f(state.dsp);
-    document.getElementById('current-rebirth-points').innerText=f(state.pendingDsp||0);
-    let ok=Math.ceil(state.maxStage/10)>10;document.getElementById('btn-rebirth').disabled=!ok;document.getElementById('r-lock-stage').innerText=Math.ceil(state.maxStage/10);document.getElementById('rebirth-lock-text').style.display=ok?'none':'block';
+    function initTreasuresDOM() {
+        let h=''; Object.entries(GameConfig.Treasures).forEach(([id, d]) => { 
+            h += `
+            <div class="treasure-item locked" id="tb-${id}">
+                <strong style="color:${d.color};font-size:13px;border-bottom:1px dotted #e8e3d8;padding-bottom:4px;">${d.name} <span id="tb-lv-${id}" style="color:#f6b93b;font-size:11px;"></span></strong>
+                <span style="color:#9c9285;font-size:11px;margin:5px 0;">${d.desc} <strong id="tb-eff-${id}" style="color:#5a8a65;">+0</strong><br><span id="tb-next-${id}" style="font-size:10px;color:#b5c7b9;"></span></span>
+                <div class="t-actions upg-actions">
+                    <button class="upg-act-btn" id="btn-t1-${id}" onclick="buyTreasure('${id}',1)"></button>
+                    <button class="upg-act-btn btn-10x" id="btn-t10-${id}" style="display:none;" onclick="buyTreasure('${id}',10)"></button>
+                </div>
+            </div>`;
+        }); document.getElementById('treasure-grid').innerHTML=h;
+    }
+    function updateTreasuresUI() {
+        Object.entries(GameConfig.Treasures).forEach(([id, d]) => {
+            let lv=state['t_'+id]||0, c1=getTreasureUpgCost(id,lv,1), c10=getTreasureUpgCost(id,lv,10), el=document.getElementById(`tb-${id}`);
+            el.className=`treasure-item ${lv>0?'owned':'locked'}`; document.getElementById(`tb-lv-${id}`).innerText=lv>0?`Lv.${lv}`:"";
+            document.getElementById(`tb-eff-${id}`).innerText=`+${parseFloat(getTreasureEff(id).toFixed(2))}${d.unit}`;
+            document.getElementById(`tb-next-${id}`).innerText=`(下一级: +${parseFloat((lv===0?d.unlockEff:(d.unlockEff+lv*(d.unlockEff*0.01))).toFixed(2))}${d.unit})`;
+            let b1=document.getElementById(`btn-t1-${id}`), b10=document.getElementById(`btn-t10-${id}`);
+            b1.disabled=(state.dsp<c1); b10.disabled=(state.dsp<c10); 
+            if(lv===0){ 
+                b1.style.display='flex';b10.style.display='none'; 
+                b1.innerHTML=`<span>×1</span><div style="display:flex;align-items:center;opacity:0.95;">${YL_UI} <span style="margin-left:2px;">${f(c1)}</span></div>`; 
+            } else { 
+                b1.style.display='flex';b10.style.display='flex'; 
+                b1.innerHTML=`<span>×1</span><div style="display:flex;align-items:center;opacity:0.95;">${YL_UI} <span style="margin-left:2px;">${f(c1)}</span></div>`; 
+                b10.innerHTML=`<span>×10</span><div style="display:flex;align-items:center;opacity:0.95;">${YL_UI} <span style="margin-left:2px;">${f(c10)}</span></div>`; 
+            }
+        });
+    }
+    function buyTreasure(id,n) { let lv=state['t_'+id]||0,c=getTreasureUpgCost(id,lv,n); if(state.dsp>=c){state.dsp-=c;state['t_'+id]=lv+n;updateUI();} }
 
-    const uS=(id,ck,lk,dP,dT,uT)=>{let lv=state[lk],c1=getUpgradeCost(id,1),c10=getUpgradeCost(id,10);document.getElementById(`cost-${id}-1`).innerText=f(c1);document.getElementById(`cost-${id}-10`).innerText=f(c10);document.getElementById(`btn-${id}-1`).disabled=state.gold<c1;document.getElementById(`btn-${id}-10`).disabled=state.gold<c10;let b10=document.getElementById(`btn-${id}-10`);if(id.startsWith('a')&&lv===0)b10.style.display='none';else b10.style.display='inline-block';if(lv===0&&uT){document.getElementById(`lvl-${id}`).innerText="未解";document.getElementById(`desc-${id}`).innerHTML=`<span style="color:#7f8fa6;">${uT}</span>`;}else{document.getElementById(`lvl-${id}`).innerText=`Lv.${lv}`;document.getElementById(`desc-${id}`).innerHTML=`<span style="color:#2ed573;">精炼：${dP}</span><br><span style="color:#00cec9;">总计：${dT}</span>`;}};
-    uS('dmg','c_dmg','l_dmg',`+${f(Math.pow(2,Math.floor(state.l_dmg/20)))}攻`,`+${f(state.dmg-1)}攻`,null);
-    uS('cR','c_cR','l_cR',`+0.1%暴率`,`+${(state.l_cR*0.1).toFixed(1)}%`,null);
-    uS('cD','c_cD','l_cD',`+1%暴伤`,`+${state.l_cD}%`,null);
-    uS('dd','c_dd','l_dd',`+1倍必杀`,`+${state.l_dd}倍`,null);
-    uS('a0','c_a0','l_a0',`+2次/分`,`+${state.l_a0>0?120+(state.l_a0-1)*2:0}次/分`,getAttackerUnlockDesc('a0'));
-    uS('a1','c_a1','l_a1',`+10次/分`,`+${state.l_a1>0?50+(state.l_a1-1)*10:0}次/分`,getAttackerUnlockDesc('a1'));
-    uS('a2','c_a2','l_a2',`+20次/分`,`+${state.l_a2>0?100+(state.l_a2-1)*20:0}次/分`,getAttackerUnlockDesc('a2'));
-    uS('a3','c_a3','l_a3',`+30次/分`,`+${state.l_a3>0?150+(state.l_a3-1)*30:0}次/分`,getAttackerUnlockDesc('a3'));
-    uS('a4','c_a4','l_a4',`+50次/分`,`+${state.l_a4>0?250+(state.l_a4-1)*50:0}次/分`,getAttackerUnlockDesc('a4'));
-    uS('a5','c_a5','l_a5',`+100次/分`,`+${state.l_a5>0?500+(state.l_a5-1)*100:0}次/分`,getAttackerUnlockDesc('a5'));
-    document.getElementById('btn-challenge').style.display=(state.cStage<state.maxStage)?'block':'none';
-    document.getElementById('ava-a0').classList.toggle('active',state.l_a0>0);document.getElementById('ava-a1').classList.toggle('active',state.l_a1>0);document.getElementById('ava-a2').classList.toggle('active',state.l_a2>0);document.getElementById('ava-a3').classList.toggle('active',state.l_a3>0);document.getElementById('ava-a4').classList.toggle('active',state.l_a4>0);document.getElementById('ava-a5').classList.toggle('active',state.l_a5>0);}
+    function playRebirthAnimation() { return new Promise(r=>{ let fl=document.getElementById('rebirth-flash'),tx=document.getElementById('rebirth-text'),vp=document.getElementById('viewport-main'); fl.style.display='flex';void fl.offsetWidth;fl.style.opacity='1';tx.style.opacity='1';tx.style.transform='scale(1)'; setTimeout(()=>{ vp.style.opacity='0';r(); setTimeout(()=>{ fl.style.opacity='0';tx.style.opacity='0';tx.style.transform='scale(0.2)';vp.style.opacity='1'; setTimeout(()=>fl.style.display='none',800); },1000);},600); }); }
+    async function doRebirth(skip=false) { if(isRebirthing)return; let g=Ce(state.pendingDsp||0); if(!skip&&!confirm(`【大道轮回·重燃真身】\n万界灵气俱散！\n此番淬炼可聚：${f(g)} 点妖灵。\n步入轮回通道？`))return; isRebirthing=true; await playRebirthAnimation(); state.dsp+=g; state.pendingDsp=0; state.rebirthCount++; state.cStage=1; state.maxStage=1; state.dmg=GameConfig.Settings.baseAttack; state.critR=GameConfig.Settings.baseCritRate; state.critD=GameConfig.Settings.baseCritDmg; state.deadlyD=GameConfig.Settings.baseDeadlyDmg; GameConfig.Upgrades.forEach(u=>{ state['l_'+u.id]=0; state['c_'+u.id]=u.baseCost; }); GameConfig.Summons.forEach(s=>{ state['l_'+s.id]=0; state['c_'+s.id]=s.baseCost; }); state.gold=Ce(1000000*getActualCoinMult()); spawnMonster(state.cStage,true); isRebirthing=false; if(isAutoRebirth)processAutoUpg(); updateUI(); }
 
-    function fastSyncMonsterUI(){let st=state.cStage,rnd=Math.ceil(st/10),midx=(st-1)%10+1,sI=document.getElementById('stage-info-text');if(isBoss){sI.innerHTML=`第${rnd}轮 - 🌟 <span style="color:#ff6b81">${mythicNames[(st*13)%mythicNames.length]}</span>`;document.getElementById('boss-timer-wrap').style.display='inline-block';if(bossExpireTime===0)bossExpireTime=Date.now()+90000;}else{sI.innerHTML=`<span style="color:#2ed573;">第${rnd}轮 - ${midx}重 [${mythicNames[(st*13)%mythicNames.length]}]</span>`;document.getElementById('boss-timer-wrap').style.display='none';}
-    elMonster.classList.toggle('boss',isBoss);elMonster.style.background=`linear-gradient(135deg,hsl(${(isBoss?rnd*55:st*30)%360},${isBoss?65:30}%,55%),hsl(${(isBoss?rnd*55:st*30)%360},${isBoss?65:30}%,35%))`;elMonster.innerText=emojis[(st*7)%emojis.length];
-    document.getElementById('hp-current').innerText=f(state.hpCurrent);document.getElementById('hp-max').innerText=f(state.hpMax);document.getElementById('hp-bar').style.width=Math.max(0,(state.hpCurrent/state.hpMax)*100)+'%';}
+    const elM = document.getElementById('monster'), elWrap = document.getElementById('monster-wrapper');
+    function triggerHitAnim() { elM.classList.remove('hit'); void elM.offsetWidth; elM.classList.add('hit'); }
+    function executeDeathAndSpawnVisuals() { 
+        if(document.visibilityState !=='visible'||isRebirthing)return; 
+        let g=document.createElement('div'); g.className='monster-ghost'; if(sn_boss)g.classList.add('boss');
+        if(sn_img && sn_img !== "none") { g.style.background = sn_img; g.style.border="none"; g.style.boxShadow="none"; } else { g.style.background=sn_color; g.innerText=sn_emoji; }
+        
+        // ⭐完美修复残像体积极度膨胀：挂载目标修正为其真正的物理大小父级
+        elWrap.appendChild(g); setTimeout(()=>g.remove(),350);
+        
+        elM.classList.remove('spawn'); void elM.offsetWidth; elM.classList.add('spawn');
+        setTimeout(()=>{ let dl=document.createElement('div');dl.className='dust-l'; let dr=document.createElement('div');dr.className='dust-r'; elWrap.appendChild(dl);elWrap.appendChild(dr); setTimeout(()=>{dl.remove();dr.remove();},400);},180);
+        setTimeout(()=>elM.classList.remove('spawn'),450);
+    }
 
-    function spawnMonster(st,rH=false){let rnd=Math.ceil(st/10),midx=(st-1)%10+1;isBoss=(midx===10);state.hpMax=getStageHp(st);if(rH||state.hpCurrent<=0)state.hpCurrent=state.hpMax;if(!isBoss)bossExpireTime=0;needUIUpdate=true;}
-    function challengeBoss(){state.cStage=state.maxStage;spawnMonster(state.cStage,true);updateUI();fastSyncMonsterUI();}
+    function getTotalAutoRate() { let t = 0; GameConfig.Summons.forEach(s => { if(state['l_'+s.id]>0) t += s.baseFreq + (state['l_'+s.id]-1)*s.freqStep; }); return Ce(t*(1+getTreasureEff('qiankun')/100)); }
+
+    setInterval(()=>{ let n=Date.now(),dt=n-lastLogicTick; lastLogicTick=n; if(isRebirthing)return;
+        if(isBoss&&bossExpireTime>0){ let ls=Math.ceil((bossExpireTime-n)/1000); if(ls<=0){bossExpireTime=0;state.cStage--;spawnMonster(state.cStage,true);} else document.getElementById('timer-text').innerText=ls; }
+        let tr = getTotalAutoRate();
+        if(tr>=1800) {
+            let ea=(tr/60000)*dt, aCR=getActualCR(),aCD=getActualCD(),aDR=getActualDR(),aDD=getActualDD(), bd=Ce(state.dmg*getActualAtkMult());
+            let avg=Ce(bd*(1-(aCR/100)+(aCR/100)*(aCD/100))*(1-(aDR/100)+(aDR/100)*aDD)), dp=Ce(ea*avg); if(dp>99999999)dp=Math.floor(dp/10000)*10000;
+            let ka=false, sd=dp, sf=false;
+            while(dp>0 && state.hpCurrent>0) {
+                if(dp>=state.hpCurrent) {
+                    dp-=state.hpCurrent;state.hpCurrent=0;ka=true; let cm=getActualCoinMult(), rnd=Math.ceil(state.cStage/10), dm=rnd<5?1:(Math.floor(rnd/5)+1);
+                    state.pendingDsp += Ce((isBoss?3:1)*dm*(1+getTreasureEff('shengsi')/100));
+                    if(isBoss){ state.gold+=Ce((state.hpMax*3)*cm*(1+getTreasureEff('yuanbao')/100)); bossExpireTime=0; if(isAutoRebirth&&rnd===parseInt(document.getElementById('auto-stage-input').value)) {sf=true;break;} } else state.gold+=Ce(state.hpMax*cm);
+                    if(!pendingShouldPlayDeath&&document.visibilityState==='visible'){ sn_emoji=elM.innerText;sn_color=elM.style.background;sn_img=elM.style.backgroundImage!==''?elM.style.backgroundImage:'none'; sn_boss=elM.classList.contains('boss'); pendingShouldPlayDeath=true;}
+                    if(state.cStage===state.maxStage)state.maxStage++; state.cStage++; isBoss=(((state.cStage-1)%10+1)===10); state.hpMax=getStageHp(state.cStage); state.hpCurrent=state.hpMax;
+                } else { state.hpCurrent-=dp;dp=0; }
+            }
+            if(sd>0||ka)needUIUpdate=true;
+            if(sd>0&&document.visibilityState==='visible'){triggerHitAnim();const r=elM.getBoundingClientRect();buildFloatDmg(r.left+r.width/2,r.top,sd,'deadly',true);}
+            if(sf)doRebirth(true); else if(ka&&isAutoRebirth)processAutoUpg();
+        } else if(tr>0) { autoAttackAccumulator += (tr/60000)*dt; if(autoAttackAccumulator>=1){ let c=Math.floor(autoAttackAccumulator); autoAttackAccumulator-=c; batchSimulate(c); } }
+        if(needUIUpdate) { updateUI(); fastSyncMonsterUI(); if(currentTabId==='leaderboard')renderLeaderboard(); needUIUpdate=false; }
+        if(pendingShouldPlayDeath) { executeDeathAndSpawnVisuals(); pendingShouldPlayDeath=false; }
+    }, 100);
+
+    function buildFloatDmg(x,y,dmg,type,isAuto){ 
+        let d=document.createElement('div'); d.className='floating-damage'; 
+        let mk=isAuto?`<span class="auto-dmg-mark">🤖</span>`:''; 
+        if(type==='deadly'){d.classList.add('deadly-damage');d.innerHTML=`${mk}☠️ -${f(Ce(dmg))}`;}else if(type==='crit'){d.classList.add('crit-damage');d.innerHTML=`${mk}💥 -${f(Ce(dmg))}`;}else{d.innerHTML=`${mk}-${f(Ce(dmg))}`;} 
+        let r=(Math.random()-0.5)*30; let areaRect=document.getElementById('monster-area').getBoundingClientRect(); 
+        d.style.left=(x - areaRect.left + r)+'px'; d.style.top=(y - areaRect.top - 15)+'px'; 
+        document.getElementById('monster-area').appendChild(d); setTimeout(()=>d.remove(),800); 
+    }
+
+    function batchSimulate(c) {
+        let aCR=getActualCR(),aCD=getActualCD(),aDR=getActualDR(),aDD=getActualDD(),bd=Ce(state.dmg*getActualAtkMult()), aL=c, bt=0, anyC=false, anyD=false;
+        while(aL>0 && state.hpCurrent>0) {
+            if(aL<50){ let isC=(Math.random()*100)<aCR, isD=(Math.random()*100)<aDR, fd=bd; if(isC){fd=Ce(fd*(aCD/100));anyC=true;} if(isD){fd=Ce(fd*aDD);anyD=true;} if(fd>99999999)fd=Math.floor(fd/10000)*10000; state.hpCurrent-=fd; bt+=fd; aL--; if(state.hpCurrent<=0) fastDefeatHandling(); }
+            else{ let ev=Ce(bd*(1-(aCR/100)+(aCR/100)*(aCD/100))*(1-(aDR/100)+(aDR/100)*aDD)); if(ev>99999999)ev=Math.floor(ev/10000)*10000; let hk=Math.ceil(state.hpCurrent/Math.max(1,ev)); if(hk<=aL){bt+=state.hpCurrent;aL-=hk;state.hpCurrent=0;anyC=true;fastDefeatHandling();} else{state.hpCurrent-=(ev*aL);bt+=(ev*aL);anyC=true;aL=0;} }
+        }
+        if(bt>0&&document.visibilityState==='visible'){triggerHitAnim();let r=elM.getBoundingClientRect();buildFloatDmg(r.left+r.width/2,r.top,bt,anyD?'deadly':(anyC?'crit':'normal'),true);} needUIUpdate=true;
+    }
+
+    function fastDefeatHandling(){ let rnd=Math.ceil(state.cStage/10); state.pendingDsp+=Ce((isBoss?3:1)*(rnd<5?1:Math.floor(rnd/5)+1)*(1+getTreasureEff('shengsi')/100)); if(!pendingShouldPlayDeath&&document.visibilityState==='visible'){sn_emoji=elM.innerText;sn_color=elM.style.background;sn_img=elM.style.backgroundImage!==''?elM.style.backgroundImage:'none'; sn_boss=elM.classList.contains('boss');pendingShouldPlayDeath=true;} let cm=getActualCoinMult(); if(isBoss){state.gold+=Ce((state.hpMax*3)*cm*(1+getTreasureEff('yuanbao')/100));bossExpireTime=0;}else state.gold+=Ce(state.hpMax*cm); if(state.cStage===state.maxStage)state.maxStage++;state.cStage++; if(isAutoRebirth){processAutoUpg();if(isBoss&&rnd===parseInt(document.getElementById('auto-stage-input').value)){doRebirth(true);return;}} isBoss=(((state.cStage-1)%10+1)===10);state.hpMax=getStageHp(state.cStage);state.hpCurrent=state.hpMax; }
+
+    function attackHnd(e) { if(state.hpCurrent<=0||isRebirthing)return; triggerHitAnim(); let isC=(Math.random()*100)<getActualCR(),isD=(Math.random()*100)<getActualDR(),fd=Ce(state.dmg*getActualAtkMult()); if(isC)fd=Ce(fd*(getActualCD()/100)); if(isD)fd=Ce(fd*getActualDD()); if(fd>99999999)fd=Math.floor(fd/10000)*10000; state.hpCurrent-=fd; let t='normal';if(isD)t='deadly';else if(isC)t='crit'; buildFloatDmg(e.clientX,e.clientY,fd,t,false); if(state.hpCurrent<=0)fastDefeatHandling(); updateUI();fastSyncMonsterUI();needUIUpdate=false; if(pendingShouldPlayDeath){executeDeathAndSpawnVisuals();pendingShouldPlayDeath=false;} }
+
+    function updateUI() {
+        processQuests(); updateTreasuresUI();
+        document.getElementById('gold').innerText=f(state.gold);
+        document.getElementById('stat-dmg').innerText=f(Ce(state.dmg*getActualAtkMult()));
+        document.getElementById('stat-auto').innerText=f(Ce(getTotalAutoRate()));
+        document.getElementById('stat-crit-rate').innerText=getActualCR().toFixed(1)+"%";
+        document.getElementById('stat-crit-dmg').innerText=f(getActualCD())+"%";
+        document.getElementById('stat-deadly-rate').innerText=getActualDR().toFixed(1)+"%";
+        document.getElementById('stat-deadly-dmg').innerText=f(getActualDD())+"x";
+        document.getElementById('stat-rebirths-main').innerText=state.rebirthCount;
+        document.getElementById('stat-dsp-main').innerText=f(state.dsp);
+        document.getElementById('current-rebirth-points').innerText=f(state.pendingDsp||0);
+        let ok=Math.ceil(state.maxStage/10)>10; document.getElementById('btn-rebirth').disabled=!ok;
+        document.getElementById('r-lock-stage').innerText=Math.ceil(state.maxStage/10); document.getElementById('rebirth-lock-text').style.display=ok?'none':'block';
+
+        let cKeys = [...GameConfig.Upgrades, ...GameConfig.Summons];
+        cKeys.forEach(cfg => {
+            let lv=state['l_'+cfg.id], c1=getUpgCostRange(cfg.id,1), c10=getUpgCostRange(cfg.id,10);
+            let isS = GameConfig.Summons.some(s=>s.id===cfg.id);
+            
+            let btn1 = document.getElementById(`btn-${cfg.id}-1`);
+            let btn10 = document.getElementById(`btn-${cfg.id}-10`);
+            
+            if(btn1) btn1.disabled=(state.gold<c1);
+            if(btn10 && isS && lv===0) { btn10.style.display='none'; document.getElementById(`cost-${cfg.id}-1`).innerText = f(c1); }
+            else if(btn10) {
+                btn10.style.display='flex';
+                document.getElementById(`cost-${cfg.id}-1`).innerText = f(c1);
+                document.getElementById(`cost-${cfg.id}-10`).innerText = f(c10);
+                btn10.disabled=(state.gold<c10);
+            }
+            
+            if(lv===0 && isS) { 
+                document.getElementById(`lvl-${cfg.id}`).innerText="未习"; 
+                document.getElementById(`desc-${cfg.id}`).innerHTML=`<span style="color:#789e83;">解锁后增加每分钟自动攻击 <strong style="color:#d35400">${cfg.baseFreq}</strong> 次</span>`; 
+            } 
+            else {
+                document.getElementById(`lvl-${cfg.id}`).innerText=`Lv.${lv}`;
+                if(isS) { document.getElementById(`desc-${cfg.id}`).innerHTML=`<span style="color:#5a8a65;">下一级: <strong style="color:#27ae60">+${cfg.freqStep}</strong> 次/分</span><br><span style="color:#d48a42;">总加成: <strong style="color:#d35400">${cfg.baseFreq+(lv-1)*cfg.freqStep}</strong> 次/分</span>`; } 
+                else {
+                    let totalStr = ""; if(cfg.id==='dmg') totalStr=f(state.dmg-GameConfig.Settings.baseAttack)+cfg.unit; else if(cfg.id==='cR') totalStr=(state.l_cR*cfg.uStep).toFixed(1)+cfg.unit; else if(cfg.id==='cD') totalStr=(state.l_cD*cfg.uStep)+cfg.unit; else if(cfg.id==='dd') totalStr=(state.l_dd*cfg.uStep)+cfg.unit;
+                    let nextStr = ""; if(cfg.id==='dmg') nextStr=f(Math.pow(2,Math.floor(state.l_dmg/20)))+cfg.unit; else nextStr=cfg.uStep+cfg.unit;
+                    document.getElementById(`desc-${cfg.id}`).innerHTML=`<span style="color:#5a8a65;">下一级: <strong style="color:#27ae60">+${nextStr}</strong></span><br><span style="color:#d48a42;">总加成: <strong style="color:#d35400">+${totalStr}</strong></span>`;
+                }
+            }
+        });
+
+        document.getElementById('btn-challenge').style.display=(state.cStage<state.maxStage)?'block':'none';
+        GameConfig.Summons.forEach(s => { let d = document.getElementById(`ava-${s.id}`); if(d) d.classList.toggle('active', state['l_'+s.id]>0); });
+    }
+
+    function fastSyncMonsterUI() {
+        let st=state.cStage, rnd=Math.ceil(st/10), midx=(st-1)%10+1, sI=document.getElementById('stage-info-text');
+        if(isBoss) { sI.innerHTML=`第 ${rnd} 轮道劫 - 🌟 <span style="color:#d66453">${mythicNames[(st*13)%mythicNames.length]}</span>`; document.getElementById('boss-timer-wrap').style.display='inline-block'; if(bossExpireTime===0)bossExpireTime=Date.now()+90000; } 
+        else { sI.innerHTML=`第 ${rnd} 轮 - ${midx}重灵印 [${mythicNames[(st*13)%mythicNames.length]}]`; document.getElementById('boss-timer-wrap').style.display='none'; }
+        
+        let mArr = GameConfig.Images.monsters; 
+        let safePool = mArr.filter(i => i.trim() !== ""); 
+        let cImg = safePool.length > 0 ? safePool[st % safePool.length] : "";
+        
+        elM.classList.toggle('boss',isBoss);
+        
+        if(cImg) {
+            elM.style.background = `url('${cImg}') center/contain no-repeat transparent`;
+            elM.style.backgroundImage = `url('${cImg}')`; 
+            elM.style.border = 'none'; elM.style.boxShadow = 'none'; elM.innerText = '';
+        } else {
+            elM.style.background=`linear-gradient(135deg,hsl(${(isBoss?rnd*55:st*30)%360},${isBoss?65:30}%,75%),hsl(${(isBoss?rnd*55:st*30)%360},${isBoss?65:30}%,55%))`; 
+            elM.style.backgroundImage = ''; 
+            elM.style.border= isBoss ? '3px solid #d66453' : '2px solid #fff'; 
+            elM.style.boxShadow= isBoss ? '' : 'inset 0 0 10px rgba(255,255,255,0.8), 0 4px 8px rgba(0,0,0,0.05)';
+            elM.innerText=emojis[(st*7)%emojis.length]; 
+        }
+        document.getElementById('hp-current').innerText=f(state.hpCurrent); document.getElementById('hp-max').innerText=f(state.hpMax); document.getElementById('hp-bar').style.width=Math.max(0,(state.hpCurrent/state.hpMax)*100)+'%';
+    }
+
+    function spawnMonster(st,rH=false){ let midx=(st-1)%10+1; isBoss=(midx===10); state.hpMax=getStageHp(st); if(rH||state.hpCurrent<=0)state.hpCurrent=state.hpMax; if(!isBoss)bossExpireTime=0; needUIUpdate=true; }
+    function challengeBoss(){state.cStage=state.maxStage; spawnMonster(state.cStage,true); updateUI(); fastSyncMonsterUI();}
 </script>
 </body>
 </html>
